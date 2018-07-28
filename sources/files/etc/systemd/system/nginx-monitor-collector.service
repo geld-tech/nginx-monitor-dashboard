@@ -1,0 +1,13 @@
+[Unit]
+Description=__PACKAGE_DESC__
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=__PACKAGE_DIR__
+ExecStart=__PACKAGE_DIR__/monitor-collectord.py start
+ExecStop=__PACKAGE_DIR__/monitor-collectord.py stop
+
+[Install]
+WantedBy=multi-user.target
+
