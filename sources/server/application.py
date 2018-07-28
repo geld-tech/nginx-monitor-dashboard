@@ -148,13 +148,13 @@ def server_hostname():
         return jsonify({"cpu_temp": "localhost", "error": "Couldn't read hostname, check logs for more details.."}), 500
 
 
-@app.route("/server/temperature")
-def server_temperature():
-    cpu_temp = server_metrics.get_server_temperature()
-    if cpu_temp:
-        return jsonify({'cpu_temp': cpu_temp}), 200
-    else:
-        return jsonify({"cpu_temp": "-273.15", "error": "Couldn't read temperature, check logs for more details.."}), 500
+@app.route("/nginx_status", strict_slashes=False)
+def nginx_status():
+    response = '''Active connections: 4 
+server accepts handled requests
+1650 1650 9255 
+Reading: 0 Writing: 1 Waiting: 3'''
+    return response, 200
 
 
 @app.errorhandler(404)
