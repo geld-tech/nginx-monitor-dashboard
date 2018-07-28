@@ -1,0 +1,45 @@
+#!/bin/sh
+set -e
+
+echo "Post-Installation Macro"
+
+IS_UPGRADE=false
+
+case "$1" in
+	configure)
+		# If $1=configure and $2 is set, this is an upgrade
+		if [ "$2" != "" ]; then
+			IS_UPGRADE=true
+		fi
+		if [ "$IS_UPGRADE" = "true" ]; then
+			# Upgrading already installed package package
+			if [ -f /tmp/__PACKAGE_NAME__.settings.cfg ]; then
+				echo -n "Restoring preserved local configuration ..."
+				cp -p /tmp/__PACKAGE_NAME__.settings.cfg __PACKAGE_DIR__/config/settings.cfg
+				rm -f /tmp/__PACKAGE_NAME__.settings.cfg
+				echo " OK"
+			fi
+			echo ""
+			echo -n "Restarting service..."
+			systemctl daemon-reload
+			systemctl start __PACKAGE_NAME__ || true
+			echo " OK"
+			echo ""
+			echo "Service __PACKAGE_NAME__ upgraded successfully!!"
+		else
+			# Preforming a fresh install fo the package
+			echo -n "Starting service..."
+			systemctl daemon-reload
+			systemctl enable __PACKAGE_NAME__ || true
+			echo " OK"
+			cp -p __PACKAGE_DIR__/config/settings.cfg.template __PACKAGE_DIR__/config/settings.cfg
+			echo ""
+			echo "Service __PACKAGE_NAME__ installed successfully!"
+			echo ""
+			echo "Edit the file __PACKAGE_DIR__/config/settings.cfg with your credentials, then execute the following command to start the service:"
+			echo "  systemctl start __PACKAGE_NAME__"
+		fi
+		;;
+esac
+
+exit 0
