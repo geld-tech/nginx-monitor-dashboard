@@ -59,7 +59,6 @@ if [ ! -f server/config/settings.cfg ]; then
 fi
 
 # Run background metrics collector
-rm -f /dev/shm/monitor-collectord.sqlite3
 cd server/
 echo ""
 echo "### METRICS COLLECTOR ###"
