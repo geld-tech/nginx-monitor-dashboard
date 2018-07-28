@@ -1,7 +1,7 @@
-Name:       __NAME__
+Name:       __PACKAGE_NAME__
 Version:    __SOFTWARE_VERSION__
 Release:    __RELEASE_VERSION__
-Summary:    __DESC__
+Summary:    __PACKAGE_DESC__
 
 License:    __LICENSE__
 
@@ -11,7 +11,7 @@ Requires:   bash, python
 # description macro to include information in the RPM header
 ##############################################################################
 %description
-__DESC__
+__PACKAGE_DESC__
 
 
 ##############################################################################

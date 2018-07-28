@@ -16,6 +16,7 @@ addons:
     packages:
     - fakeroot
     - python-flake8
+    - rpm
 
 language: node_js
 node_js:
@@ -37,19 +38,24 @@ env:
 before_install:
   # Export variables containing versions and filename
   - export PACKAGE_DIR=/opt/geld/webapps/$PACKAGE_NAME
-  - export RELEASE_VERSION=$(cat VERSION)
-  - export BUILD_VERSION=$RELEASE_VERSION.$TRAVIS_BUILD_NUMBER
+  - export SOFTWARE_VERSION=$(cat VERSION)
+  - export RELEASE_VERSION=$TRAVIS_BUILD_NUMBER
+  - export BUILD_VERSION=$SOFTWARE_VERSION.$RELEASE_VERSION
   - export BUILD_DATE=$(date "+%Y%m%d")
   - export PACKAGE_VERSION=$PACKAGE_NAME-$BUILD_VERSION
   - export PACKAGE_VERSION_DEB=$PACKAGE_VERSION.deb
-  # Replace version and build number with the Debian control file
+  - export PACKAGE_VERSION_RPM=$PACKAGE_NAME-$SOFTWARE_VERSION-$RELEASE_VERSION.$TARGET_ARCH.rpm
+
+  # Replace placeholders in the Debian control file and the RPM .spec file
   - find . -type f | xargs sed -i "s/__PACKAGE_NAME__/$PACKAGE_NAME/g"
   - find . -type f | xargs sed -i "s/__PACKAGE_DESC__/$PACKAGE_DESC/g"
   - find . -type f | xargs sed -i "s/__PACKAGE_AUTHOR__/$PACKAGE_AUTHOR/g"
+  - find . -type f | xargs sed -i "s/__LICENSE__/$BINTRAY_LICENSE/g"
+  - find . -type f | xargs sed -i "s/__SOFTWARE_VERSION__/$SOFTWARE_VERSION/g"
+  - find . -type f | xargs sed -i "s/__RELEASE_VERSION__/$RELEASE_VERSION/g"
   - find . -type f | xargs sed -i "s/__VERSION__/$BUILD_VERSION/g"
   - find . -type f | xargs sed -i "s/__USER__/$BINTRAY_USER/g"
   - find . -type f | xargs sed -i "s/__DATE__/$BUILD_DATE/g"
-  - find . -type f | xargs sed -i "s/__GA_UA_ID__/$GA_UA_ID/g"
   - find . -type f | xargs sed -i "s.__PACKAGE_DIR__.$PACKAGE_DIR.g"
 
 install:
@@ -86,6 +92,12 @@ before_script:
 script:
   # Create the Debian package using fakeroot forcing ownership to root user
   - fakeroot dpkg-deb --build $PACKAGE_VERSION
+  # Create the RPM package
+  - cd $PACKAGE_NAME
+  - mkdir -p ./{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+  - cp -r files/ BUILD
+  - rpmbuild -v -bb --target $TARGET_ARCH --define "_topdir `pwd`" --define "package_files `pwd`/BUILD/files" rpm.spec
+  - cd ..
 
 after_success:
   # Stores hashes of created package to ensure upload successful
