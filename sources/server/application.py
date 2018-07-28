@@ -32,7 +32,7 @@ logger = logging.getLogger('root')
 server_metrics = ServerMetrics()
 
 # DB Session
-db_path = '/dev/shm/monitor-collectord.sqlite3'
+db_path = './data/metrics.sqlite3'
 engine = create_engine('sqlite:///'+db_path)
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
