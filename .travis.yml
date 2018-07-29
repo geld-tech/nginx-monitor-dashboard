@@ -92,14 +92,15 @@ before_script:
 script:
   # Create the Debian package using fakeroot forcing ownership to root user
   - fakeroot dpkg-deb --build $PACKAGE_VERSION
+  # RPM directories structure
   - mkdir -p ./$PACKAGE_NAME/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
-  - mkdir -p $PACKAGE_VERSION/BUILD/$PACKAGE_DIR/templates/
-  - mkdir -p $PACKAGE_VERSION/BUILD/$PACKAGE_DIR/static/
-  - rsync -a --chown=root:www-data sources/files/ $PACKAGE_VERSION/BUILD/
-  - rsync -a --chown=root:www-data sources/server/ $PACKAGE_VERSION/BUILD/$PACKAGE_DIR
-  - rsync -a --chown=root:www-data sources/webapp/dist/*.html $PACKAGE_VERSION/BUILD/$PACKAGE_DIR/templates/
-  - rsync -a -r --chown=root:www-data sources/webapp/dist/static/ $PACKAGE_VERSION/BUILD/$PACKAGE_DIR/static/
-  - rsync -a -r --chown=root:www-data packages/RPM/ $PACKAGE_VERSION/
+  - mkdir -p $PACKAGE_NAME/BUILD/$PACKAGE_DIR/templates/
+  - mkdir -p $PACKAGE_NAME/BUILD/$PACKAGE_DIR/static/
+  - rsync -a --chown=root:www-data sources/files/ $PACKAGE_NAME/BUILD/
+  - rsync -a --chown=root:www-data sources/server/ $PACKAGE_NAME/BUILD/$PACKAGE_DIR
+  - rsync -a --chown=root:www-data sources/webapp/dist/*.html $PACKAGE_NAME/BUILD/$PACKAGE_DIR/templates/
+  - rsync -a -r --chown=root:www-data sources/webapp/dist/static/ $PACKAGE_NAME/BUILD/$PACKAGE_DIR/static/
+  - rsync -a --chown=root:www-data packages/RPM/* $PACKAGE_NAME/
   # Create the RPM package
   - cd $PACKAGE_NAME
   - pwd
