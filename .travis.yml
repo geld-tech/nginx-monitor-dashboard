@@ -155,7 +155,7 @@ deploy:
   skip_cleanup: true
   # Upload RPM packages to Bintray
   provider: bintray
-  file: $BINTRAY_DESCRIPTOR_DEB
+  file: $BINTRAY_DESCRIPTOR_RPM
   user: $BINTRAY_USER
   key: $BINTRAY_API_KEY
   skip_cleanup: true
