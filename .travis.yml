@@ -34,6 +34,7 @@ env:
   - BINTRAY_REPO_NAME=debian
   - BINTRAY_LICENSE=Apache-2.0
   - BINTRAY_DESCRIPTOR=bintray-descriptor.json.in
+  - TARGET_ARCH=noarch
 
 before_install:
   # Export variables containing versions and filename
