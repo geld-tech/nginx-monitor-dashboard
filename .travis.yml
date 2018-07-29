@@ -121,9 +121,10 @@ after_success:
   - md5sum $PACKAGE_VERSION_DEB
   - sha256sum $PACKAGE_VERSION_DEB
   # Output detail on the resulting RPM package for debugging purpose
-  - rpm -qlpv $PACKAGE_NAME/RPMS/$TARGET_ARCH/$PACKAGE_VERSION_RPM
-  - md5sum $PACKAGE_NAME/RPMS/$TARGET_ARCH/$PACKAGE_NAME_VERSION
-  - sha256sum $PACKAGE_NAME/RPMS/$TARGET_ARCH/$PACKAGE_NAME_VERSION
+  - rsync -a $PACKAGE_NAME/RPMS/$TARGET_ARCH/$PACKAGE_VERSION_RPM .
+  - rpm -qlpv $PACKAGE_VERSION_RPM
+  - md5sum $PACKAGE_NAME_VERSION
+  - sha256sum $PACKAGE_NAME_VERSION
 
 before_deploy:
   # Set the packages name and details in the descriptor file
