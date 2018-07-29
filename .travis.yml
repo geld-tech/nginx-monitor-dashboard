@@ -103,9 +103,7 @@ script:
   - rsync -a --chown=root:www-data packages/RPM/* $PACKAGE_NAME/
   # Create the RPM package
   - cd $PACKAGE_NAME
-  - pwd
-  - ls -lsthRA .
-  - rpmbuild -v -bb --target $TARGET_ARCH --define "_topdir `pwd`" --define "package_files `pwd`/BUILD/" rpm.spec
+  - rpmbuild -v -bb --target $TARGET_ARCH --define "package_files `pwd`/BUILD/" rpm.spec
   - cd ..
 
 after_success:
