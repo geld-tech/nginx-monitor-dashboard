@@ -189,9 +189,8 @@ after_deploy:
   # Add time delay to let the servers process the uploaded new version and delete old files
   - sleep 120
   
-  #  DEBIAN
-  ## Retrieve SHA256 sum and compare with local sum to ensure correct file uploaded
-  ## (Useful to detect upload issues or problems with Bintray)
+  # Retrieve SHA256 sum and compare with local sum to ensure correct file uploaded (Debian repository only)
+  # (Useful to detect upload issues or problems with Bintray)
   - export REMOTE_SHA256=$(curl -L -v --silent https://bintray.com/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_DEB/download_file?file_path=Packages.gz | zcat | grep -A 3 $PACKAGE_VERSION_DEB | grep SHA256 | cut -d" " -f2)
   - 'echo "REMOTE_SHA256: $REMOTE_SHA256"'
   - >
