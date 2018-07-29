@@ -148,19 +148,17 @@ before_deploy:
 
 deploy:
   # Upload Debian packages to Bintray
-  provider: bintray
-  file: $BINTRAY_DESCRIPTOR_DEB
-  user: $BINTRAY_USER
-  key: $BINTRAY_API_KEY
-  skip_cleanup: true
-
-deploy:
+  - provider: bintray
+    file: $BINTRAY_DESCRIPTOR_DEB
+    user: $BINTRAY_USER
+    key: $BINTRAY_API_KEY
+    skip_cleanup: true
   # Upload RPM packages to Bintray
-  provider: bintray
-  file: $BINTRAY_DESCRIPTOR_RPM
-  user: $BINTRAY_USER
-  key: $BINTRAY_API_KEY
-  skip_cleanup: true
+  - provider: bintray
+    file: $BINTRAY_DESCRIPTOR_RPM
+    user: $BINTRAY_USER
+    key: $BINTRAY_API_KEY
+    skip_cleanup: true
 
 after_deploy:
   # Retrieve releases list and delete old packages files
