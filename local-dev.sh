@@ -69,4 +69,4 @@ sleep 30
 # Run application locally on port :5000 (Press CTRL+C to quit)
 echo ""
 echo "### RUN ###"
-python application.py
+python ../stub/nginx-status-stub.py & python application.py
