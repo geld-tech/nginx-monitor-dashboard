@@ -23,8 +23,10 @@ node_js:
   - "6"
 
 cache:
+  bundler: true
   directories:
     - $HOME/.npm
+    - node_modules # NPM packages
 
 env:
   global:
