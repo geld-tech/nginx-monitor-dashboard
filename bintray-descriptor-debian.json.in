@@ -24,10 +24,6 @@
 				"deb_component": "main",
 				"deb_architecture": "amd64"
 			}
-		},
-        {
-            "includePattern": "./(.[^/]*(\\.rpm)$)",
-            "uploadPattern": "$1"
         }
 	],
 

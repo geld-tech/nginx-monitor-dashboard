@@ -31,9 +31,11 @@ env:
   - PACKAGE_NAME=nginx-monitor-dashboard
   - PACKAGE_DESC="Dashboard displaying NGINX resources built with Python Flask, Vue.js, and Chart.js"
   - PACKAGE_AUTHOR=geld.tech
-  - BINTRAY_REPO_NAME=debian
+  - BINTRAY_REPO_NAME_DEB=debian
+  - BINTRAY_REPO_NAME_RPM=rpm
   - BINTRAY_LICENSE=Apache-2.0
-  - BINTRAY_DESCRIPTOR=bintray-descriptor.json.in
+  - BINTRAY_DESCRIPTOR_DEB=bintray-descriptor-debian.json.in
+  - BINTRAY_DESCRIPTOR_RPM=bintray-descriptor-rpm.json.in
   - TARGET_ARCH=noarch
 
 before_install:
@@ -123,23 +125,37 @@ after_success:
   # Output detail on the resulting RPM package for debugging purpose
   - rsync -a $PACKAGE_NAME/RPMS/$TARGET_ARCH/$PACKAGE_VERSION_RPM .
   - rpm -qlpv $PACKAGE_VERSION_RPM
-  - md5sum $PACKAGE_NAME_VERSION
-  - sha256sum $PACKAGE_NAME_VERSION
+  - md5sum $PACKAGE_VERSION_RPM
+  - sha256sum $PACKAGE_VERSION_RPM
 
 before_deploy:
-  # Set the packages name and details in the descriptor file
-  - sed -i "s/__NAME__/$PACKAGE_NAME/g" $BINTRAY_DESCRIPTOR
-  - sed -i "s/__PACKAGE_DESC__/$PACKAGE_DESC/g" $BINTRAY_DESCRIPTOR
-  - sed -i "s/__PACKAGE_AUTHOR__/$PACKAGE_AUTHOR/g" $BINTRAY_DESCRIPTOR
-  - sed -i "s/__REPO_NAME__/$BINTRAY_REPO_NAME/g" $BINTRAY_DESCRIPTOR
-  - sed -i "s/__SUBJECT__/$BINTRAY_SUBJECT/g" $BINTRAY_DESCRIPTOR
-  - sed -i "s/__LICENSE__/$BINTRAY_LICENSE/g" $BINTRAY_DESCRIPTOR
-  - sed -i "s/__VERSION__/$BUILD_VERSION/g" $BINTRAY_DESCRIPTOR
+  # Set the packages name and details in the DEBIAN descriptor file
+  - sed -i "s/__NAME__/$PACKAGE_NAME/g" $BINTRAY_DESCRIPTOR_DEB
+  - sed -i "s/__PACKAGE_DESC__/$PACKAGE_DESC/g" $BINTRAY_DESCRIPTOR_DEB
+  - sed -i "s/__PACKAGE_AUTHOR__/$PACKAGE_AUTHOR/g" $BINTRAY_DESCRIPTOR_DEB
+  - sed -i "s/__REPO_NAME__/$BINTRAY_REPO_NAME/g" $BINTRAY_DESCRIPTOR_DEB
+  - sed -i "s/__SUBJECT__/$BINTRAY_SUBJECT/g" $BINTRAY_DESCRIPTOR_DEB
+  - sed -i "s/__LICENSE__/$BINTRAY_LICENSE/g" $BINTRAY_DESCRIPTOR_DEB
+  - sed -i "s/__VERSION__/$BUILD_VERSION/g" $BINTRAY_DESCRIPTOR_DEB
+  # Set the packages name and details in the RPM descriptor file
+  - sed -i "s/__NAME__/$PACKAGE_NAME/g" $BINTRAY_DESCRIPTOR_RPM
+  - sed -i "s/__PACKAGE_DESC__/$PACKAGE_DESC/g" $BINTRAY_DESCRIPTOR_RPM
+  - sed -i "s/__PACKAGE_AUTHOR__/$PACKAGE_AUTHOR/g" $BINTRAY_DESCRIPTOR_RPM
+  - sed -i "s/__REPO_NAME__/$BINTRAY_REPO_NAME/g" $BINTRAY_DESCRIPTOR_RPM
+  - sed -i "s/__SUBJECT__/$BINTRAY_SUBJECT/g" $BINTRAY_DESCRIPTOR_RPM
+  - sed -i "s/__LICENSE__/$BINTRAY_LICENSE/g" $BINTRAY_DESCRIPTOR_RPM
+  - sed -i "s/__VERSION__/$BUILD_VERSION/g" $BINTRAY_DESCRIPTOR_RPM
 
 deploy:
-  # Upload debian packages to Bintray
+  # Upload Debian packages to Bintray
   provider: bintray
-  file: $BINTRAY_DESCRIPTOR
+  file: $BINTRAY_DESCRIPTOR_DEB
+  user: $BINTRAY_USER
+  key: $BINTRAY_API_KEY
+  skip_cleanup: true
+  # Upload RPM packages to Bintray
+  provider: bintray
+  file: $BINTRAY_DESCRIPTOR_DEB
   user: $BINTRAY_USER
   key: $BINTRAY_API_KEY
   skip_cleanup: true
@@ -147,22 +163,34 @@ deploy:
 after_deploy:
   # Retrieve releases list and delete old packages files
   - sleep 60
-  - 'export OLD_RELEASES=$(curl -L -v --silent https://bintray.com/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME/download_file?file_path=Packages.gz | zcat | grep -A 6 "Package: $PACKAGE_NAME" | grep Version | cut -d" " -f2 | sort -V | head -n -5)'
+  # Prunes old Debian releases
+  - 'export OLD_RELEASES=$(curl -L -v --silent https://bintray.com/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_DEB/download_file?file_path=Packages.gz | zcat | grep -A 6 "Package: $PACKAGE_NAME" | grep Version | cut -d" " -f2 | sort -V | head -n -5)'
   - 'echo "OLD_RELEASES: $OLD_RELEASES"'
   - >
     for RELEASE_NUM in $OLD_RELEASES; do
       echo "Sending API request to delete $PACKAGE_NAME version $RELEASE_NUM" ;
-      curl --silent --show-error --fail -X DELETE -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/content/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME/$PACKAGE_NAME-$RELEASE_NUM.deb ;
-      curl --silent --show-error --fail -X DELETE -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/content/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME/$PACKAGE_NAME-$RELEASE_NUM.deb.asc ;
+      curl --silent --show-error --fail -X DELETE -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/content/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_DEB/$PACKAGE_NAME-$RELEASE_NUM.deb ;
+      curl --silent --show-error --fail -X DELETE -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/content/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_DEB/$PACKAGE_NAME-$RELEASE_NUM.deb.asc ;
+      sleep 5 ;
+    done
+  # Prunes old RPM releases
+  - 'export OLD_RELEASES=$(curl -L -v --silent https://bintray.com/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM/download_file?file_path=Packages.gz | zcat | grep -A 6 "Package: $PACKAGE_NAME" | grep Version | cut -d" " -f2 | sort -V | head -n -5)'
+  - 'echo "OLD_RELEASES: $OLD_RELEASES"'
+  - >
+    for RELEASE_NUM in $OLD_RELEASES; do
+      echo "Sending API request to delete $PACKAGE_NAME version $RELEASE_NUM" ;
+      curl --silent --show-error --fail -X DELETE -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/content/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM/$PACKAGE_NAME-$RELEASE_NUM.deb ;
+      curl --silent --show-error --fail -X DELETE -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/content/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM/$PACKAGE_NAME-$RELEASE_NUM.deb.asc ;
       sleep 5 ;
     done
   
   # Add time delay to let the servers process the uploaded new version and delete old files
   - sleep 120
   
-  # Retrieve SHA256 sum and compare with local sum to ensure correct file uploaded
-  # (Useful to detect upload issues or problems with Bintray)
-  - export REMOTE_SHA256=$(curl -L -v --silent https://bintray.com/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME/download_file?file_path=Packages.gz | zcat | grep -A 3 $PACKAGE_VERSION_DEB | grep SHA256 | cut -d" " -f2)
+  #  DEBIAN
+  ## Retrieve SHA256 sum and compare with local sum to ensure correct file uploaded
+  ## (Useful to detect upload issues or problems with Bintray)
+  - export REMOTE_SHA256=$(curl -L -v --silent https://bintray.com/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_DEB/download_file?file_path=Packages.gz | zcat | grep -A 3 $PACKAGE_VERSION_DEB | grep SHA256 | cut -d" " -f2)
   - 'echo "REMOTE_SHA256: $REMOTE_SHA256"'
   - >
     if [[ "$LOCAL_SHA256" != "$REMOTE_SHA256" ]]; then
@@ -174,10 +202,10 @@ after_deploy:
   - |
     curl --silent --show-error --fail\
     -X PUT -H "Content-Type: application/json" -d'{"list_in_downloads": true}' \
-    -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/file_metadata/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME/$PACKAGE_VERSION_DEB
+    -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/file_metadata/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_DEB/$PACKAGE_VERSION_DEB
 
   # Place link to the RPM file in download list
   - |
     curl --silent --show-error --fail\
     -X PUT -H "Content-Type: application/json" -d'{"list_in_downloads": true}' \
-    -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/file_metadata/$BINTRAY_USER/$BINTRAY_REPO_NAME/$PACKAGE_NAME_VERSION
+    -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/file_metadata/$BINTRAY_USER/$BINTRAY_REPO_NAME_DEB/$PACKAGE_VERSION_RPM
