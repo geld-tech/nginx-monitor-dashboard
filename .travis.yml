@@ -27,7 +27,8 @@ cache:
   bundler: true
   directories:
     - $HOME/.npm
-    - node_modules # NPM packages
+    - node_modules        # NPM packages
+    - $HOME/.rvm/  # Ruby packages (e.g. Bintray)
 
 env:
   global:
@@ -210,4 +211,4 @@ after_deploy:
   - |
     curl --silent --show-error --fail\
     -X PUT -H "Content-Type: application/json" -d'{"list_in_downloads": true}' \
-    -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/file_metadata/$BINTRAY_USER/$BINTRAY_REPO_NAME_DEB/$PACKAGE_VERSION_RPM
+    -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/file_metadata/$BINTRAY_USER/$BINTRAY_REPO_NAME_RPM/$PACKAGE_VERSION_RPM
