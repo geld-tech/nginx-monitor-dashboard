@@ -182,8 +182,8 @@ after_deploy:
   - >
     for OLD_PACKAGE in $OLD_RPM_PACKAGES; do
       echo "Sending API request to delete $PACKAGE_NAME filename $OLD_PACKAGE" ;
-      curl --silent --show-error --fail -X DELETE -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/content/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM/$OLD_PACKAGE ;
-      curl --silent --show-error --fail -X DELETE -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/content/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM/$OLD_PACKAGE.asc ;
+      curl --silent --show-error --fail -X DELETE -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/content/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM/$OLD_PACKAGE.rpm ;
+      curl --silent --show-error --fail -X DELETE -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/content/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM/$OLD_PACKAGE.rpm.asc ;
       sleep 5 ;
     done
   
