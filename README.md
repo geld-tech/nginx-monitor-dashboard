@@ -14,17 +14,25 @@
     <td>License</td>
   </tr>
   <tr>
-    <td>
-       [![Download](https://api.bintray.com/packages/geldtech/debian/nginx-monitor-dashboard/images/download.svg)](https://bintray.com/geldtech/debian/nginx-monitor-dashboard#files) 
+    <td align="left">
+        <a href="https://bintray.com/geldtech/debian/nginx-monitor-dashboard#files">
+            <img src="https://api.bintray.com/packages/geldtech/debian/nginx-monitor-dashboard/images/download.svg" alt="Download DEBs">
+        </a>
     </td>
-    <td>
-        [![Download](https://api.bintray.com/packages/geldtech/rpm/nginx-monitor-dashboard/images/download.svg)](https://bintray.com/geldtech/rpm/nginx-monitor-dashboard#files)
+    <td align="left">
+        <a href="https://bintray.com/geldtech/rpm/nginx-monitor-dashboard#files">
+            <img src="https://api.bintray.com/packages/geldtech/rpm/nginx-monitor-dashboard/images/download.svg" alt="Download RPMs">
+        </a>
     </td>
-    <td>
-        [![Build Status](https://travis-ci.org/geld-tech/nginx-monitor-dashboard.svg?branch=master)](https://travis-ci.org/geld-tech/nginx-monitor-dashboard)
+    <td align="left">
+        <a href="https://travis-ci.org/geld-tech/nginx-monitor-dashboard">
+            <img src="https://travis-ci.org/geld-tech/nginx-monitor-dashboard.svg?branch=master" alt="Build Status">
+        </a>
     </td>
-    <td>
-        [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+    <td align="left">
+        <a href="https://opensource.org/licenses/Apache-2.0">
+            <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="">
+        </a>
     </td>
   </tr>
 </table>
