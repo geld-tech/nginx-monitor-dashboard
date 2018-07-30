@@ -2,8 +2,12 @@
 
 ## Status
 
-[![Download](https://api.bintray.com/packages/geldtech/debian/nginx-monitor-dashboard/images/download.svg)](https://bintray.com/geldtech/debian/nginx-monitor-dashboard#files)
+Ubuntu/Debian [![Download](https://api.bintray.com/packages/geldtech/debian/nginx-monitor-dashboard/images/download.svg)](https://bintray.com/geldtech/debian/nginx-monitor-dashboard#files)
+
+CentOS/Red Hat [![Download](https://api.bintray.com/packages/geldtech/rpm/nginx-monitor-dashboard/images/download.svg)](https://bintray.com/geldtech/rpm/nginx-monitor-dashboard#files)
+
 [![Build Status](https://travis-ci.org/geld-tech/nginx-monitor-dashboard.svg?branch=master)](https://travis-ci.org/geld-tech/nginx-monitor-dashboard)
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
