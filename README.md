@@ -20,7 +20,9 @@ Dashboard displaying NGINX resources built with Python Flask, Vue.js, and Chart.
 A sample demo of the project is hosted on <a href="http://geld.tech">geld.tech</a>.
 
 
-## Usage
+## Install
+
+### Ubuntu/Debian
 
 * Install the repository information and associated GPG key (to ensure authenticity):
 ```
@@ -38,6 +40,27 @@ $ sudo apt clean
 ```
 $ sudo apt install nginx-monitor-dashboard
 ```
+
+### CentOS/Red Hat
+
+* Install the repository by creating the file /etc/yum.repos.d/zlig.repo:
+
+```
+echo "[geld.tech]
+name=geld.tech
+baseurl=https://dl.bintray.com/geldtech/rpm
+gpgcheck=0
+repo_gpgcheck=0
+enabled=1" | sudo tee -a /etc/yum.repos.d/geld.tech.repo
+```
+
+* Install the package
+```
+sudo yum install nginx-monitor-dashboard
+```
+
+
+## Usage
 
 * Reload services and start ours
 ```
