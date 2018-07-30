@@ -17,6 +17,7 @@ addons:
     - fakeroot
     - python-flake8
     - rpm
+    - yum-utils
 
 language: node_js
 node_js:
@@ -176,13 +177,13 @@ after_deploy:
       sleep 5 ;
     done
   # Prunes old RPM releases
-  - 'export OLD_RELEASES=$(curl -L -v --silent https://bintray.com/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM/download_file?file_path=Packages.gz | zcat | grep -A 6 "Package: $PACKAGE_NAME" | grep Version | cut -d" " -f2 | sort -V | head -n -5)'
-  - 'echo "OLD_RELEASES: $OLD_RELEASES"'
+  - 'export OLD_RPM_PACKAGES=$(repoquery --repofrompath=$BINTRAY_SUBJECT,https://dl.bintray.com/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM --repoid=$BINTRAY_SUBJECT  --search $PACKAGE_NAME | sort -V | head -n -5)'
+  - 'echo "OLD_RPM_PACKAGES: $OLD_RPM_PACKAGES"'
   - >
-    for RELEASE_NUM in $OLD_RELEASES; do
-      echo "Sending API request to delete $PACKAGE_NAME version $RELEASE_NUM" ;
-      curl --silent --show-error --fail -X DELETE -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/content/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM/$PACKAGE_NAME-$RELEASE_NUM.deb ;
-      curl --silent --show-error --fail -X DELETE -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/content/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM/$PACKAGE_NAME-$RELEASE_NUM.deb.asc ;
+    for OLD_PACKAGE in $OLD_RPM_PACKAGES; do
+      echo "Sending API request to delete $PACKAGE_NAME filename $OLD_PACKAGE" ;
+      curl --silent --show-error --fail -X DELETE -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/content/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM/$OLD_PACKAGE ;
+      curl --silent --show-error --fail -X DELETE -u$BINTRAY_USER:$BINTRAY_API_KEY https://api.bintray.com/content/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM/$OLD_PACKAGE.asc ;
       sleep 5 ;
     done
   
