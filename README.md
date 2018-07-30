@@ -3,33 +3,29 @@
 ## Status
 
 <table>
-  <tr>
-    <td colspan="2">Download</td>
-    <td colspan="2"></td>
+  <tr class="table">
+    <th>Ubuntu/Debian</th>
+    <th>CentOS/Red Hat</th>
+    <th>Build Status</th>
+    <th>License</th>
   </tr>
   <tr>
-    <td>Ubuntu/Debian</td>
-    <td>CentOS/Red Hat</td>
-    <td>Build Status</td>
-    <td>License</td>
-  </tr>
-  <tr>
-    <td align="left">
+    <td>
         <a href="https://bintray.com/geldtech/debian/nginx-monitor-dashboard#files">
             <img src="https://api.bintray.com/packages/geldtech/debian/nginx-monitor-dashboard/images/download.svg" alt="Download DEBs">
         </a>
     </td>
-    <td align="left">
+    <td>
         <a href="https://bintray.com/geldtech/rpm/nginx-monitor-dashboard#files">
             <img src="https://api.bintray.com/packages/geldtech/rpm/nginx-monitor-dashboard/images/download.svg" alt="Download RPMs">
         </a>
     </td>
-    <td align="left">
+    <td>
         <a href="https://travis-ci.org/geld-tech/nginx-monitor-dashboard">
             <img src="https://travis-ci.org/geld-tech/nginx-monitor-dashboard.svg?branch=master" alt="Build Status">
         </a>
     </td>
-    <td align="left">
+    <td>
         <a href="https://opensource.org/licenses/Apache-2.0">
             <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="">
         </a>
