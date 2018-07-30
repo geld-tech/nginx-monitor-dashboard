@@ -177,7 +177,7 @@ after_deploy:
       sleep 5 ;
     done
   # Prunes old RPM releases
-  - 'export OLD_RPM_PACKAGES=$(repoquery --repofrompath=$BINTRAY_SUBJECT,https://dl.bintray.com/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM --repoid=$BINTRAY_SUBJECT  --search $PACKAGE_NAME | sort -V | head -n -5)'
+  - 'export OLD_RPM_PACKAGES=$(repoquery --repofrompath=$BINTRAY_SUBJECT,https://dl.bintray.com/$BINTRAY_SUBJECT/$BINTRAY_REPO_NAME_RPM --repoid=$BINTRAY_SUBJECT  --search $PACKAGE_NAME | sort -V | head -n -5 | sed "s/0://g" )'
   - 'echo "OLD_RPM_PACKAGES: $OLD_RPM_PACKAGES"'
   - >
     for OLD_PACKAGE in $OLD_RPM_PACKAGES; do
