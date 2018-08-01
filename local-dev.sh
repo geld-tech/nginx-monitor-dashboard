@@ -1,6 +1,15 @@
 #!/bin/sh
 set -e
 
+## Functions
+intexit() {
+    kill -HUP -$$
+}
+hupexit() {
+    exit
+}
+
+## Main
 echo "### CLEANUP & CONFIGURE ###"
 # Cleanup
 rm -rf .local_dev/
@@ -59,15 +68,23 @@ if [ ! -f server/config/settings.cfg ]; then
     cp -p server/config/settings.cfg.template server/config/settings.cfg
 fi
 
-# Run background metrics collector
+# Run background nginx status stub service
 cd server/
 echo ""
+echo "### NGINX STUB STATUS ###"
+trap hupexit HUP
+trap intexit INT
+python ../stub/nginx-status-stub.py &
+sleep 5
+
+# Run background metrics collector
+echo ""
 echo "### METRICS COLLECTOR ###"
-trap "python monitor-collectord.py stop" INT TERM
+#trap "python monitor-collectord.py stop" INT TERM
 python monitor-collectord.py start
-sleep 30
+sleep 10
 
 # Run application locally on port :5000 (Press CTRL+C to quit)
 echo ""
 echo "### RUN ###"
-python ../stub/nginx-status-stub.py & python application.py
+python application.py
