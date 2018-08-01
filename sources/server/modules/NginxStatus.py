@@ -12,7 +12,7 @@ class NginxStatus:
     def __init__(self, url="http://127.0.0.1:8000/nginx_status"):
         logging.basicConfig(format='[%(asctime)-15s] [%(threadName)s] %(levelname)s %(message)s', level=logging.INFO)
         self.logger = logging.getLogger('root')
-        self.hostname = self.get_server_hostname()
+        self.hostname = self._get_server_hostname()
         self._data = {}
         self.url = url
         self.collect_metrics()
@@ -52,10 +52,13 @@ class NginxStatus:
             self.logger.error('Error retrieving server metrics: %s' % e)
             return {}
 
-    def get_server_hostname(self):
+    def _get_server_hostname(self):
         try:
             hostname = socket.gethostname()
             return hostname
         except Exception, e:
             self.logger.error('Error reading hostname: %s' % e)
             return False
+
+    def get_server_hostname(self):
+        return self.hostname

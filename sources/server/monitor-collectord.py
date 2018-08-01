@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import atexit
 from daemon import runner
-import datetime
 import sys
 import time
 from modules.NginxStatus import NginxStatus
@@ -27,7 +26,7 @@ class MetricsCollector():
         # Initialise object to collect metrics
         nginx_status = NginxStatus()
         # Connect to database
-        self.db_open(hostname)
+        self.db_open(nginx_status.get_server_hostname())
         # First metrics poll to instantiate system information
         while True:
             # Poll and store

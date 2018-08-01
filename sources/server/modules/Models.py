@@ -1,5 +1,5 @@
 import datetime
-from sqlalchemy import Column, ForeignKey, Integer, Float, String, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -28,8 +28,8 @@ class Status(Base):
     date_time = Column(DateTime(timezone=True), default=datetime.datetime.utcnow)
     active = Column(Integer)            # active connections
     server_requests = Column(Integer)   # server requests
-    accepts_requests = Column(Integer   # accepts requests
-    handled_requests = Column(Integer   # handled requests
+    accepts_requests = Column(Integer)  # accepts requests
+    handled_requests = Column(Integer)  # handled requests
     reading = Column(Integer)           # reading connections
     writing = Column(Integer)           # writing connections
     waiting = Column(Integer)           # waiting connections
