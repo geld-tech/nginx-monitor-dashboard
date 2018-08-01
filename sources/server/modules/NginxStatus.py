@@ -46,7 +46,7 @@ class NginxStatus:
                     'reading': reading,
                     'writing': writing,
                     'waiting': waiting}
-            self.debug('nginx_status:\n%s\n%s\n%s\n%s' % (r1, r2, r3, r4))
+            self.logger.debug('nginx_status:\n%s\n%s\n%s\n%s' % (r1, r2, r3, r4))
             return data
         except Exception, e:
             self.logger.error('Error retrieving server metrics: %s' % e)
