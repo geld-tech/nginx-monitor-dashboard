@@ -7,6 +7,7 @@ import ConfigParser
 import logging
 import logging.handlers
 from optparse import OptionParser
+import os
 from flask import Flask, render_template, jsonify
 
 from modules.NginxStatus import NginxStatus
@@ -29,7 +30,7 @@ logger = logging.getLogger('root')
 nginx_status = NginxStatus()
 
 # DB Session
-db_path = './data/metrics.sqlite3'
+db_path = os.path.dirname(os.path.abspath(__file__))+'/data/metrics.sqlite3'
 engine = create_engine('sqlite:///'+db_path)
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
