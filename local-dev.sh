@@ -8,6 +8,7 @@ mkdir .local_dev/
 # Copy files
 cp -r sources/server/ .local_dev/
 cp -r sources/webapp/ .local_dev/
+cp -r stub/ .local_dev/
 cd .local_dev/
 # Replace place holders
 find . -type f | xargs sed -i "s/__PACKAGE_NAME__/localdev/g"
