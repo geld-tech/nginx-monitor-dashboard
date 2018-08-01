@@ -31,7 +31,7 @@ class MetricsCollector():
         while True:
             # Poll and store
             data = nginx_status.poll_metrics()
-            self.store_system_information(data)
+            self.store_status(data)
             time.sleep(self.poll_interval)
 
     def db_open(self, hostname='localhost'):
