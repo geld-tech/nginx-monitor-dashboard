@@ -43,3 +43,29 @@ class Process(Base):
     date_time = Column(DateTime(timezone=True), default=datetime.datetime.utcnow)
     server_id = Column(Integer, ForeignKey('server.id'))
     server = relationship(Server)
+
+
+class NginxVersion(Base):
+    __tablename__ = 'nginxstatus'
+    id = Column(Integer, primary_key=True)
+    date_time = Column(DateTime(timezone=True), default=datetime.datetime.utcnow)
+    version = Column(String(128))
+    full_version = Column(String(2048))
+    server_id = Column(Integer, ForeignKey('server.id'))
+    server = relationship(Server)
+
+
+class NginxStatus(Base):
+    __tablename__ = 'nginxstatus'
+    id = Column(Integer, primary_key=True)
+    date_time = Column(DateTime(timezone=True), default=datetime.datetime.utcnow)
+    active = Column(Integer)            # active connections
+    server = Column(Integer)            # server requests
+    accepts = Column(Integer)           # accepts requests
+    handled = Column(Integer)           # handled requests
+    reading = Column(Integer)           # reading connections
+    writing = Column(Integer)           # writing connections
+    waiting = Column(Integer)           # waiting connections
+    server_id = Column(Integer, ForeignKey('server.id'))
+    server = relationship(Server)
+
