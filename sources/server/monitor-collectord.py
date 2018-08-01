@@ -4,14 +4,14 @@ from daemon import runner
 import datetime
 import sys
 import time
-from modules.ServerMetrics import ServerMetrics
-from modules.Models import Base, Server, SystemInformation, SystemStatus, Process
+from modules.NginxStatus import NginxStatus
+from modules.Models import Base, Server, Status
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 
 class MetricsCollector():
-    def __init__(self, pid_file, poll_interval=30, db_path='/dev/shm/monitor-collectord.sqlite3'):
+    def __init__(self, pid_file, poll_interval=60, db_path='/dev/shm/monitor-collectord.sqlite3'):
         self.stdin_path = '/dev/null'
         self.stdout_path = '/dev/null'
         self.stderr_path = '/dev/null'
@@ -25,19 +25,14 @@ class MetricsCollector():
 
     def run(self):
         # Initialise object to collect metrics
-        sm = ServerMetrics()
-        hostname = sm.get_server_hostname()
+        nginx_status = NginxStatus()
         # Connect to database
         self.db_open(hostname)
         # First metrics poll to instantiate system information
-        data = sm.poll_metrics()
-        self.store_system_information(data)
         while True:
             # Poll and store
-            ts = datetime.datetime.utcnow()
-            data = sm.poll_metrics()
-            self.store_system_status(ts, data)
-            self.store_processes(ts, data)
+            data = nginx_status.poll_metrics()
+            self.store_system_information(data)
             time.sleep(self.poll_interval)
 
     def db_open(self, hostname='localhost'):
@@ -58,34 +53,13 @@ class MetricsCollector():
     def db_rollback(self):
         self.db_session.rollback()
 
-    def store_system_information(self, data):
-        sys_info = SystemInformation(platform=data['platform'],
-                                     system=data['system'],
-                                     release=data['release'],
-                                     server=self.server)
-        self.db_session.add(sys_info)
+    def store_status(self, data):
+        status = Status(reading=data['reading'],
+                        writing=data['writing'],
+                        waiting=data['waiting'],
+                        server=self.server)
+        self.db_session.add(status)
         self.db_session.commit()
-
-    def store_system_status(self, timestamp, data):
-        sys_status = SystemStatus(cpu_percent=data['cpu_percent'],
-                                  vmem_percent=data['vmem_percent'],
-                                  cpu_temp=data['cpu_temp'],
-                                  swap_percent=data['swap_usage']['percent'],
-                                  date_time=timestamp,
-                                  server=self.server)
-        self.db_session.add(sys_status)
-        self.db_session.commit()
-
-    def store_processes(self, timestamp, data):
-        for proc in data['processes']:
-            if proc['cpu_percent'] > 0.9:  # Won't store irrelevant information
-                process = Process(pid=proc['pid'],
-                                  name=proc['name'],
-                                  cpu_percent=proc['cpu_percent'],
-                                  date_time=timestamp,
-                                  server=self.server)
-                self.db_session.add(process)
-                self.db_session.commit()
 
 
 def is_running(pid_file):

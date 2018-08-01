@@ -12,41 +12,8 @@ class Server(Base):
     hostname = Column(String(250), nullable=False)
 
 
-class SystemInformation(Base):
-    __tablename__ = 'system_information'
-    id = Column(Integer, primary_key=True)
-    platform = Column(String(250))
-    system = Column(String(128))
-    release = Column(String(128), nullable=False)
-    server_id = Column(Integer, ForeignKey('server.id'))
-    server = relationship(Server)
-
-
-class SystemStatus(Base):
-    __tablename__ = 'system_status'
-    id = Column(Integer, primary_key=True)
-    cpu_percent = Column(Float)
-    vmem_percent = Column(Float)
-    swap_percent = Column(Float)
-    cpu_temp = Column(Float)
-    date_time = Column(DateTime(timezone=True), default=datetime.datetime.utcnow)
-    server_id = Column(Integer, ForeignKey('server.id'))
-    server = relationship(Server)
-
-
-class Process(Base):
-    __tablename__ = 'processes'
-    id = Column(Integer, primary_key=True)
-    pid = Column(String(16))
-    name = Column(String(1024))
-    cpu_percent = Column(Float)
-    date_time = Column(DateTime(timezone=True), default=datetime.datetime.utcnow)
-    server_id = Column(Integer, ForeignKey('server.id'))
-    server = relationship(Server)
-
-
-class NginxVersion(Base):
-    __tablename__ = 'nginxstatus'
+class Version(Base):
+    __tablename__ = 'version'
     id = Column(Integer, primary_key=True)
     date_time = Column(DateTime(timezone=True), default=datetime.datetime.utcnow)
     version = Column(String(128))
@@ -55,14 +22,14 @@ class NginxVersion(Base):
     server = relationship(Server)
 
 
-class NginxStatus(Base):
-    __tablename__ = 'nginxstatus'
+class Status(Base):
+    __tablename__ = 'status'
     id = Column(Integer, primary_key=True)
     date_time = Column(DateTime(timezone=True), default=datetime.datetime.utcnow)
     active = Column(Integer)            # active connections
-    server = Column(Integer)            # server requests
-    accepts = Column(Integer)           # accepts requests
-    handled = Column(Integer)           # handled requests
+    server_requests = Column(Integer)   # server requests
+    accepts_requests = Column(Integer   # accepts requests
+    handled_requests = Column(Integer   # handled requests
     reading = Column(Integer)           # reading connections
     writing = Column(Integer)           # writing connections
     waiting = Column(Integer)           # waiting connections
