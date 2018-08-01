@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import atexit
 from daemon import runner
+import os
 import sys
 import time
 from modules.NginxStatus import NginxStatus
@@ -10,7 +11,7 @@ from sqlalchemy.orm import sessionmaker
 
 
 class MetricsCollector():
-    def __init__(self, pid_file, poll_interval=60, db_path='/dev/shm/monitor-collectord.sqlite3'):
+    def __init__(self, pid_file, poll_interval=60, db_path='/dev/shm/metrics.sqlite3'):
         self.stdin_path = '/dev/null'
         self.stdout_path = '/dev/tty'
         self.stderr_path = '/dev/tty'
@@ -53,12 +54,17 @@ class MetricsCollector():
         self.db_session.rollback()
 
     def store_status(self, data):
-        status = Status(reading=data['reading'],
-                        writing=data['writing'],
-                        waiting=data['waiting'],
-                        server=self.server)
-        self.db_session.add(status)
-        self.db_session.commit()
+        try:
+            status = Status(reading=data['reading'],
+                            writing=data['writing'],
+                            waiting=data['waiting'],
+                            server=self.server)
+            self.db_session.add(status)
+            self.db_session.commit()
+        except Exception:
+            print "Error accessing nginx status"
+        finally:
+            self.db_close()
 
 
 def is_running(pid_file):
@@ -77,6 +83,7 @@ def is_running(pid_file):
 
 
 # Main
+DB_PATH = os.path.abspath(os.path.dirname(__file__))+'/data/metrics.sqlite3'
 PID_FILE = '/tmp/monitor-collectord.pid'
 POLL_INTERVAL = 15
 DEBUG = False
@@ -92,7 +99,7 @@ if __name__ == "__main__":
         elif 'stop' == sys.argv[1] and not is_running(PID_FILE)[0]:
             print '%s is not running.' % sys.argv[0]
         else:
-            collector = MetricsCollector(PID_FILE, poll_interval=POLL_INTERVAL)
+            collector = MetricsCollector(PID_FILE, poll_interval=POLL_INTERVAL, db_path=DB_PATH)
             daemon = runner.DaemonRunner(collector)
             daemon.do_action()  # start|stop|restart as sys.argv[1]
             running, pid = is_running(PID_FILE)
