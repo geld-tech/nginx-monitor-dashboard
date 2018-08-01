@@ -68,4 +68,3 @@ class NginxStatus(Base):
     waiting = Column(Integer)           # waiting connections
     server_id = Column(Integer, ForeignKey('server.id'))
     server = relationship(Server)
-
