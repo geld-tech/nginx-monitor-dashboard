@@ -58,7 +58,7 @@ def status():
             status['reading'] = result.reading
             status['writing'] = result.writing
             status['waiting'] = result.waiting
-            status['date_time'] = result.date_time
+            status['date_time'] = result.date_time.strftime("%H:%M")
             data.append(status)
             time_labels.append(result.date_time)
         return jsonify({'data': data, 'time_labels': time_labels}), 200
