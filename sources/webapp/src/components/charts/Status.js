@@ -69,10 +69,24 @@ export default {
             data: this.active
           },
           {
-            label: 'Waiting',
+            label: 'Writing',
+            fill: false,
+            backgroundColor: chartColors.yellow,
+            borderColor: chartColors.yellow,
+            data: this.writing
+          },
+          {
+            label: 'Reading',
             fill: false,
             backgroundColor: chartColors.blue,
             borderColor: chartColors.blue,
+            data: this.reading
+          },
+          {
+            label: 'Waiting',
+            fill: false,
+            backgroundColor: chartColors.grey,
+            borderColor: chartColors.grey,
             data: this.waiting
           }
         ]
