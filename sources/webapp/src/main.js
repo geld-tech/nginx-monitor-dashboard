@@ -17,6 +17,7 @@ Vue.use(Collapse)
 Vue.use(Progress)
 Vue.use(Table)
 Vue.use(Navbar)
+
 Vue.use(Bar)
 Vue.use(Line)
 

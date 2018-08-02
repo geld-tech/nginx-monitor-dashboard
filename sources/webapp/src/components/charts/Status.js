@@ -12,33 +12,68 @@ var chartColors = {
 
 export default {
   extends: Line,
-  props: ['graphs_data'],
+  props: ['metrics'],
   mounted () {
     this.renderLinesChart()
   },
   computed: {
     linesChartData: function() {
-      return this.graphs_data
+      return this.metrics
+    },
+    datetimeLabels: function() {
+      var labels = []
+      for (var i = 0; i < this.metrics.length; ++i) {
+        labels.push(this.metrics[i].date_time)
+      }
+      return labels
+    },
+    active: function() {
+      var active = []
+      for (var i = 0; i < this.metrics.length; ++i) {
+        active.push(this.metrics[i].active)
+      }
+      return active
+    },
+    writing: function() {
+      var writing = []
+      for (var i = 0; i < this.metrics.length; ++i) {
+        writing.push(this.metrics[i].writing)
+      }
+      return writing
+    },
+    reading: function() {
+      var reading = []
+      for (var i = 0; i < this.metrics.length; ++i) {
+        reading.push(this.metrics[i].reading)
+      }
+      return reading
+    },
+    waiting: function() {
+      var waiting = []
+      for (var i = 0; i < this.metrics.length; ++i) {
+        waiting.push(this.metrics[i].waiting)
+      }
+      return waiting
     }
   },
   methods: {
     renderLinesChart: function() {
       this.renderChart({
-        labels: this.linesChartData.date_time,
+        labels: this.datetimeLabels,
         datasets: [
           {
-            label: 'CPU',
+            label: 'Active',
             fill: false,
             backgroundColor: chartColors.red,
             borderColor: chartColors.red,
-            data: this.linesChartData.cpu_percent
+            data: this.active
           },
           {
-            label: 'Memory',
+            label: 'Waiting',
             fill: false,
             backgroundColor: chartColors.blue,
             borderColor: chartColors.blue,
-            data: this.linesChartData.vmem_percent
+            data: this.waiting
           }
         ]
       },
@@ -50,7 +85,7 @@ export default {
     }
   },
   watch: {
-    graphs_data: function() {
+    metrics: function() {
       this.$data._chart.destroy()
       this.renderLinesChart()
     }
