@@ -3,6 +3,7 @@ set -e
 
 ## Functions
 intexit() {
+    python monitor-collectord.py stop
     kill -HUP -$$
 }
 hupexit() {
@@ -80,7 +81,6 @@ sleep 5
 # Run background metrics collector
 echo ""
 echo "### METRICS COLLECTOR ###"
-#trap "python monitor-collectord.py stop" INT TERM
 python monitor-collectord.py start
 sleep 10
 
