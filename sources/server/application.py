@@ -4,6 +4,7 @@
     Display server resources usage
 """
 import ConfigParser
+import datetime
 import logging
 import logging.handlers
 from optparse import OptionParser
@@ -13,7 +14,7 @@ from flask import Flask, render_template, jsonify
 from modules.NginxStatus import NginxStatus
 from modules.Models import Base, Server, Status
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
 
 app = Flask(__name__)
@@ -46,15 +47,21 @@ def index():
 def status():
     try:
         data = []
+        time_labels = []
+        now = datetime.datetime.utcnow()
+        last_2_hours = now - datetime.timedelta(hours=24)
+
         server = db_session.query(Server).filter_by(hostname=nginx_status.get_server_hostname())[0]
-        result = db_session.query(Status).filter_by(server=server)[0]
-        status = {}
-        status['active'] = result.active
-        status['reading'] = result.reading
-        status['writing'] = result.writing
-        status['waiting'] = result.waiting
-        data.append(status)
-        return jsonify({'data': data}), 200
+        for result in db_session.query(Status).filter_by(server=server).filter(func.DATE(Status.date_time) >= last_2_hours).order_by(Status.id):
+            status = {}
+            status['active'] = result.active
+            status['reading'] = result.reading
+            status['writing'] = result.writing
+            status['waiting'] = result.waiting
+            status['date_time'] = result.date_time
+            data.append(status)
+            time_labels.append(result.date_time)
+        return jsonify({'data': data, 'time_labels': time_labels}), 200
     except Exception, e:
         logger.error('Error retrieving nginx status: %s' % e)
         return jsonify({'data': {}, 'error': 'Could not retrieve nginx status, check logs for more details..'}), 500
