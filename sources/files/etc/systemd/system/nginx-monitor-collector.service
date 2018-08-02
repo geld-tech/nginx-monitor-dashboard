@@ -2,7 +2,7 @@
 Description=__PACKAGE_DESC__
 
 [Service]
-User=www-data
+User=root
 Group=www-data
 WorkingDirectory=__PACKAGE_DIR__
 ExecStart=__PACKAGE_DIR__/monitor-collectord.py start
