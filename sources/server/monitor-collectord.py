@@ -55,7 +55,8 @@ class MetricsCollector():
 
     def store_status(self, data):
         try:
-            status = Status(reading=data['reading'],
+            status = Status(active=data['active'],
+                            reading=data['reading'],
                             writing=data['writing'],
                             waiting=data['waiting'],
                             server=self.server)
