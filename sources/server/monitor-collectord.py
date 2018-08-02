@@ -85,9 +85,8 @@ def is_running(pid_file):
 
 # Main
 DB_PATH = os.path.abspath(os.path.dirname(__file__))+'/data/metrics.sqlite3'
-PID_FILE = '/tmp/monitor-collectord.pid'
-POLL_INTERVAL = 15
-DEBUG = False
+PID_FILE = '/tmp/nginx-monitor-collectord.pid'
+POLL_INTERVAL = 30
 
 if __name__ == "__main__":
     if len(sys.argv) == 2:
