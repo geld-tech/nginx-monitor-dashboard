@@ -80,7 +80,22 @@ export default {
       {
         responsive: true,
         maintainAspectRatio: false,
-        animation: false
+        animation: false,
+        scales: {
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Time'
+            }
+          }],
+          yAxes: [{
+            stacked: true,
+            scaleLabel: {
+              display: true,
+              labelString: '%'
+            }
+          }]
+        }
       })
     }
   },
