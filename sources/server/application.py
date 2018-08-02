@@ -49,7 +49,7 @@ def status():
         data = []
         time_labels = []
         now = datetime.datetime.utcnow()
-        last_2_hours = now - datetime.timedelta(hours=24)
+        last_2_hours = now - datetime.timedelta(hours=2)
 
         server = db_session.query(Server).filter_by(hostname=nginx_status.get_server_hostname())[0]
         for result in db_session.query(Status).filter_by(server=server).filter(func.DATE(Status.date_time) >= last_2_hours).order_by(Status.id):
