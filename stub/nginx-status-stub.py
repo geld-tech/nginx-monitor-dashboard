@@ -5,6 +5,7 @@
 """
 import logging
 import logging.handlers
+import random
 from optparse import OptionParser
 from flask import Flask
 
@@ -18,10 +19,13 @@ logger = logging.getLogger('root')
 @app.route("/")
 @app.route("/nginx_status", strict_slashes=False)
 def nginx_status():
-    response = '''Active connections: 4
+    response = '''Active connections: {active}
 server accepts handled requests
 1650 1650 9255
-Reading: 0 Writing: 1 Waiting: 3'''
+Reading: {reading} Writing: {writing} Waiting: {waiting}'''.format(active = random.randint(1, 3),
+                                           reading = random.randint(0, 3),
+                                           writing = random.randint(1, 3),
+                                           waiting = random.randint(1, 5))
     return response, 200
 
 
