@@ -98,15 +98,14 @@ export default {
         scales: {
           xAxes: [{
             scaleLabel: {
-              display: true,
-              labelString: 'Time'
+              display: false
             }
           }],
           yAxes: [{
-            stacked: true,
+            stacked: false,
             scaleLabel: {
               display: true,
-              labelString: '%'
+              labelString: 'Count'
             }
           }]
         }
