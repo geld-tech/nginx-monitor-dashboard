@@ -94,7 +94,6 @@ before_script:
   - rsync -a sources/webapp/dist/*.html $PACKAGE_VERSION/$PACKAGE_DIR/templates/
   - rsync -a -r sources/webapp/dist/static/ $PACKAGE_VERSION/$PACKAGE_DIR/static/
   - rsync -a -r packages/DEBIAN/ $PACKAGE_VERSION/DEBIAN/
-  - fakeroot chown -R root:www-data $PACKAGE_VERSION/
   ## Output files and directories for debugging purpose
   - ls -lsthRA $PACKAGE_VERSION/
   #  RPM
