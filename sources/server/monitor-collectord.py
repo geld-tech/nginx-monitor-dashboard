@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import atexit
 from daemon import runner
+import datetime
 import os
 import sys
 import time
@@ -31,8 +32,9 @@ class MetricsCollector():
         # First metrics poll to instantiate system information
         while True:
             # Poll and store
+            dt = datetime.datetime.utcnow()
             data = nginx_status.poll_metrics()
-            self.store_status(data)
+            self.store_status(dt, data)
             time.sleep(self.poll_interval)
 
     def db_open(self, hostname='localhost'):
@@ -53,12 +55,13 @@ class MetricsCollector():
     def db_rollback(self):
         self.db_session.rollback()
 
-    def store_status(self, data):
+    def store_status(self, date_time, data):
         try:
             status = Status(active=data['active'],
                             reading=data['reading'],
                             writing=data['writing'],
                             waiting=data['waiting'],
+                            timestamp=date_time.strftime('%s'),
                             server=self.server)
             self.db_session.add(status)
             self.db_session.commit()

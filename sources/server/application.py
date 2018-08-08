@@ -51,8 +51,8 @@ def status():
         now = datetime.datetime.utcnow()
         last_2_hours = now - datetime.timedelta(hours=2)
 
-        server = db_session.query(Server).filter_by(hostname=nginx_status.get_server_hostname())[0]
-        for result in db_session.query(Status).filter_by(server=server).filter(Status.date_time >= last_2_hours).order_by(Status.id):
+        server = db_session.query(Server).filter_by(hostname=nginx_status.get_server_hostname()).first()
+        for result in db_session.query(Status).filter_by(server=server).filter(Status.timestamp >= last_2_hours.strftime('%s')).order_by(Status.id):
             status = {}
             status['active'] = result.active
             status['reading'] = result.reading
