@@ -95,6 +95,11 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
         animation: false,
+        elements: {
+          point: {
+            radius: 0
+          }
+        },
         scales: {
           xAxes: [{
             scaleLabel: {
