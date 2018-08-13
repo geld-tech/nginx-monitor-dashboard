@@ -45,7 +45,7 @@ export default {
   },
   data () {
     return {
-      msg: 'Resources'
+      msg: 'NGINX Status'
     }
   }
 }
