@@ -108,6 +108,10 @@ export default {
           }],
           yAxes: [{
             stacked: false,
+            ticks: {
+              beginAtZero: true,
+              stepSize: 1
+            },
             scaleLabel: {
               display: true,
               labelString: 'Count'
