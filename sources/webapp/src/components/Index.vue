@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import Status from './charts/Status.js'
+import Status from '../charts/Status.js'
 
 export default {
   name: 'Info',
