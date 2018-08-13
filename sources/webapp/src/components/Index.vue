@@ -12,6 +12,7 @@
                 <b-col sm="4">
                     <h5>Connections</h5>
                 </b-col>
+                <b-col sm="8">
                     <p></p>
                 </b-col>
             </b-row>
