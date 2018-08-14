@@ -34,7 +34,7 @@ class NginxStatus:
             r1 = response.readline()        # Active connections: 4
             r2 = response.readline()        # server accepts handled requests
             r3 = response.readline()        # 1650 1650 9255
-            r4 = response.readline()        # Reading: 0 Writing: 1 Waiting: 3'
+            r4 = response.readline()        # Reading: 0 Writing: 1 Waiting: 3
             active = r1.split()[2]
             reading = r4.split()[1]
             writing = r4.split()[3]
