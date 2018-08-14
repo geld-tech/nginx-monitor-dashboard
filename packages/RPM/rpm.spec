@@ -47,6 +47,28 @@ echo "Executing Post-Installation macro.. "
 
 echo "Executing Pre-Uninstallation macro.. "
 
+if [ $1 -gt 1 ] ; then
+    # Upgrading already installed package
+    echo -n "Restarting service..."
+    systemctl daemon-reload
+    systemctl start __PACKAGE_NAME__ || true
+    echo " OK"
+    echo ""
+    echo "Service __PACKAGE_NAME__ upgraded successfully!!"
+
+else
+    # Performing a fresh install of  the package
+    echo -n "Starting service..."
+    systemctl daemon-reload
+    systemctl enable __PACKAGE_NAME__ || true
+    echo " OK"
+    echo ""
+    echo "Service __PACKAGE_NAME__ installed successfully!"
+    echo ""
+    echo "Edit the file __PACKAGE_DIR__/config/settings.cfg with your credentials, then start the service with the following:"
+    echo "  systemctl start __PACKAGE_NAME__"
+
+fi
 
 ##############################################################################
 # postun to execute after uninstallation 
