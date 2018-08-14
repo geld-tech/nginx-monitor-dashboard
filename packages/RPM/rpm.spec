@@ -85,10 +85,11 @@ echo "Executing Post-Uninstallation macro.. "
 ##############################################################################
 %files
 %defattr(755,root,www-data)
-%doc
-
 /opt/
 /etc/
+%config(noreplace) __PACKAGE_DIR__/config/settings.cfg
+
+%doc
 
 
 ##############################################################################
