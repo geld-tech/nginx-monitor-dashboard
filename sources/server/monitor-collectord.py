@@ -14,8 +14,8 @@ from sqlalchemy.orm import sessionmaker
 class MetricsCollector():
     def __init__(self, pid_file, poll_interval=60, db_path='/dev/shm/metrics.sqlite3'):
         self.stdin_path = '/dev/null'
-        self.stdout_path = '/dev/tty'
-        self.stderr_path = '/dev/tty'
+        self.stdout_path = '/dev/null'
+        self.stderr_path = '/dev/null'
         self.pidfile_timeout = 5
         self.pidfile_path = pid_file
         self.poll_interval = poll_interval
