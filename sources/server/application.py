@@ -23,6 +23,10 @@ app.debug = True
 # Global config for API URLs and Tokens
 config = ConfigParser.ConfigParser()
 config.readfp(open('config/settings.cfg'))
+if 'ganalytics' in config.sections():
+    ganalytics_id = config.get('ganalytics', 'ua_id')
+else:
+    ganalytics_id = False
 
 # Initialisation
 logging.basicConfig(format='[%(asctime)-15s] [%(threadName)s] %(levelname)s %(message)s', level=logging.INFO)
@@ -40,7 +44,7 @@ db_session = DBSession()
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('index.html', ga_ua_id=ganalytics_id)
 
 
 @app.route("/nginx_status", strict_slashes=False)
