@@ -19,7 +19,7 @@ case "$1" in
 		fi
 
 		if [ "$IS_UPGRADE" = "true" ]; then
-			# Upgrading already installed package package
+			# Upgrading already installed package
 			if [ -f /tmp/__PACKAGE_NAME__.settings.cfg ]; then
 				echo -n "Restoring preserved local configuration ..."
 				cp -p /tmp/__PACKAGE_NAME__.settings.cfg __PACKAGE_DIR__/config/settings.cfg
@@ -34,7 +34,7 @@ case "$1" in
 			echo ""
 			echo "Service __PACKAGE_NAME__ upgraded successfully!!"
 		else
-			# Preforming a fresh install fo the package
+			# Performing a fresh install of the package
 			echo -n "Starting service..."
 			systemctl daemon-reload
 			systemctl enable __PACKAGE_NAME__ || true
