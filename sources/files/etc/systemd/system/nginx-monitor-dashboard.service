@@ -7,7 +7,7 @@ Requires=nginx-monitor-collector
 User=www-data
 Group=www-data
 WorkingDirectory=__PACKAGE_DIR__
-ExecStart=/usr/bin/gunicorn --workers 3 --bind 0.0.0.0:8003 --keep-alive 75 -m 007 application:app
+ExecStart=/usr/bin/gunicorn --workers 3 --bind 0.0.0.0:8004 --keep-alive 75 -m 007 application:app
 
 [Install]
 WantedBy=multi-user.target
