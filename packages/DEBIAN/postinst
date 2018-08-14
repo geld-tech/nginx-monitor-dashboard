@@ -11,7 +11,7 @@ case "$1" in
 		# Set user permissions
 		chown -R root:www-data __PACKAGE_DIR__
 		chown -R root:www-data __PACKAGE_DIR__
-		chmod 775  __PACKAGE_DIR_/data
+		chmod 775  __PACKAGE_DIR__/data
 
 		# If $1=configure and $2 is set, this is an upgrade
 		if [ "$2" != "" ]; then
