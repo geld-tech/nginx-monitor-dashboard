@@ -43,7 +43,7 @@ case "$1" in
 			echo ""
 			echo "Service __PACKAGE_NAME__ installed successfully!"
 			echo ""
-			echo "Edit the file __PACKAGE_DIR__/config/settings.cfg with your credentials, then execute the following command to start the service:"
+			echo "Edit the file __PACKAGE_DIR__/config/settings.cfg with your credentials, then start the service with the following:"
 			echo "  systemctl start __PACKAGE_NAME__"
 		fi
 		;;
