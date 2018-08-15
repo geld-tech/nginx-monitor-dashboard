@@ -90,13 +90,16 @@ sudo yum install nginx-monitor-dashboard
 ## Usage
 
 * Adds Google Analytics User Agent ID (optional)
-```
-vim /opt/geld/webapps/nginx-monitor-dashboard/config/settings.cfg
+  * Edit configuration file
+  ```
+  vim /opt/geld/webapps/nginx-monitor-dashboard/config/settings.cfg
+  ```
 
-# Replace <GA_UA_ID> with required value
-[ganalytics]
-ua_id=<GA_UA_ID>
-```
+  * Replace <GA_UA_ID> with own value
+  ```
+  [ganalytics]
+  ua_id=<GA_UA_ID>
+  ```
 
 * Reload systemd services configuration and start nginx-monitor-dashboard service
 ```
