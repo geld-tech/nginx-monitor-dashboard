@@ -39,26 +39,18 @@ echo "Executing Pre-Installation macro.. "
 
 echo "Executing Post-Installation macro.. "
 
-
-##############################################################################
-# preun macro to run prior to uninstallation
-##############################################################################
-%preun
-
-echo "Executing Pre-Uninstallation macro.. "
-
 if [ $1 -gt 1 ] ; then
     # Upgrading already installed package
     echo -n "Restarting service..."
     systemctl daemon-reload
-    systemctl start __PACKAGE_NAME__ || true
+    systemctl restart __PACKAGE_NAME__ || true
     echo " OK"
     echo ""
     echo "Service __PACKAGE_NAME__ upgraded successfully!!"
 
 else
     # Performing a fresh install of  the package
-    echo -n "Starting service..."
+    echo -n "Installing service..."
     systemctl daemon-reload
     systemctl enable __PACKAGE_NAME__ || true
     echo " OK"
@@ -69,6 +61,26 @@ else
     echo "  systemctl start __PACKAGE_NAME__"
 
 fi
+
+
+##############################################################################
+# preun macro to run prior to uninstallation
+##############################################################################
+%preun
+
+echo "Executing Pre-Uninstallation macro.. "
+
+case "$1" in
+  0)
+    systemctl disable __PACKAGE_NAME__ || true
+    systemctl stop __PACKAGE_NAME__ || true
+    rm -f __PACKAGE_DIR__/config/settings.cfg
+  ;;
+  1)
+    exit 0
+  ;;
+esac
+
 
 ##############################################################################
 # postun to execute after uninstallation 
@@ -96,6 +108,8 @@ echo "Executing Post-Uninstallation macro.. "
 # changelog macro to comment on package revisions (date format important)
 ##############################################################################
 %changelog
+* Thu 21 2019 zlig <noreply@gdevnet.com>
+- Fixes order of macros
 * Sat Jul 28 2018 zlig <noreply@gdevnet.com>
 - Initial build
 
