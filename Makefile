@@ -123,6 +123,29 @@ npm-build: npm-install
 	$(call echo_title, "NPM BUILD")
 	cd $(NPM_DEV_ENV) ; npm run build
 
+## Start metrics collector daemon
+daemon-start:
+	$(call echo_title, "START METRICS DAEMON")
+	@echo "Starting stub background daemon locally, use 'make daemon-stop' to terminate.."
+	@echo ""
+	python $(SRV_DEV_ENV)/monitor-collectord.py start debug
+	@echo ""
+	@sleep 3
+
+## Stop metrics collector daemon
+daemon-stop:
+	$(call echo_title, "STOP METRICS DAEMON")
+	-python $(SRV_DEV_ENV)/monitor-collectord.py stop
+	-pkill -f $(SRV_DEV_ENV)/monitor-collectord.py
+
+## Nginx status stub daemon
+nginx-status-stub:
+	$(call echo_title, "NGINX STATUS STUB DAEMON")
+	@echo ""
+	trap hupexit HUP
+	trap intexit INT
+	python $(SRV_DEV_ENV)/stub/nginx-status-stub.py &
+
 ## Prepare application
 webapp-setup: npm-build
 	$(call echo_title, "PREPARE")
@@ -148,29 +171,6 @@ webapp-config: webapp-settings
 	$(call echo_title, "SETUP STUB SETTINGS")
 	cp -f $(SRV_DEV_ENV)/config/settings.cfg.dev $(SRV_DEV_ENV)/config/settings.cfg
 
-## Start metrics collector daemon
-daemon-start:
-	$(call echo_title, "START METRICS DAEMON")
-	@echo "Starting stub background daemon locally, use 'make daemon-stop' to terminate.."
-	@echo ""
-	python $(SRV_DEV_ENV)/monitor-collectord.py start debug
-	@echo ""
-	@sleep 3
-
-## Stop metrics collector daemon
-daemon-stop:
-	$(call echo_title, "STOP METRICS DAEMON")
-	-python $(SRV_DEV_ENV)/monitor-collectord.py stop
-	-pkill -f $(SRV_DEV_ENV)/monitor-collectord.py
-
-## Nginx status stub daemon
-nginx-stup-server:
-	$(call echo_title, "NGINX STATUS STUB DAEMON")
-	@echo ""
-	trap hupexit HUP
-	trap intexit INT
-	python $(SRV_DEV_ENV)/stub/nginx-status-stub.py &
-
 ## Start web application
 webapp-start:
 	$(call echo_title, "START WEB APPLICATION")
@@ -187,7 +187,7 @@ webapp-stop:
 	-pkill -f $(SRV_DEV_ENV)/application.py
 
 ## Start local development environment
-start: all daemon-start webapp-start
+start: all daemon-start webapp-start nginx-status-stub
 
 ## Stop local development environment
 stop: daemon-stop webapp-stop
