@@ -163,6 +163,14 @@ daemon-stop:
 	-python $(SRV_DEV_ENV)/monitor-collectord.py stop
 	-pkill -f $(SRV_DEV_ENV)/monitor-collectord.py
 
+## Nginx status stub daemon
+nginx-stup-server:
+	$(call echo_title, "NGINX STATUS STUB DAEMON")
+	@echo ""
+	trap hupexit HUP
+	trap intexit INT
+	python $(SRV_DEV_ENV)/stub/nginx-status-stub.py &
+
 ## Start web application
 webapp-start:
 	$(call echo_title, "START WEB APPLICATION")
