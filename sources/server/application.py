@@ -7,15 +7,15 @@ import ConfigParser
 import datetime
 import logging
 import logging.handlers
-from optparse import OptionParser
 import os
-from flask import Flask, render_template, jsonify
+from optparse import OptionParser
 
-from modules.NginxStatus import NginxStatus
-from modules.Models import Base, Server, Status
-
+from flask import Flask, jsonify, render_template
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
+from modules.Models import Base, Server, Status
+from modules.NginxStatus import NginxStatus
 
 app = Flask(__name__)
 app.debug = True

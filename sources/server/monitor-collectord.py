@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 import atexit
-from daemon import runner
 import datetime
 import os
 import sys
 import time
-from modules.NginxStatus import NginxStatus
-from modules.Models import Base, Server, Status
+
+from daemon import runner
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
+from modules.Models import Base, Server, Status
+from modules.NginxStatus import NginxStatus
 
 
 class MetricsCollector():
