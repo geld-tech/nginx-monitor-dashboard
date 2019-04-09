@@ -177,19 +177,23 @@ webapp-stop:
 	$(call echo_title, "STOP WEB APPLICATION")
 	-pkill -f $(SRV_DEV_ENV)/application.py
 
-## Nginx status stub daemon
-nginx-status-stub:
-	$(call echo_title, "NGINX STATUS STUB DAEMON")
+## Start Nginx status stub daemon
+nginx-status-start:
+	$(call echo_title, "START NGINX STATUS STUB DAEMON")
 	@echo ""
-	trap hupexit HUP
-	trap intexit INT
-	python $(SRV_DEV_ENV)/stub/nginx-status-stub.py &
+	python $(SRV_DEV_ENV)/../stub/nginx-status-stub.py &
+
+## Stop Nginx status stub daemon
+nginx-status-stop:
+	$(call echo_title, "STOP NGINX STATUS STUB DAEMON")
+	@echo ""
+	-pkill -f $(SRV_DEV_ENV)/../stub/nginx-status-stub.py
 
 ## Start local development environment
-start: all daemon-start webapp-start nginx-status-stub
+start: all daemon-start webapp-start nginx-status-start
 
 ## Stop local development environment
-stop: daemon-stop webapp-stop
+stop: daemon-stop webapp-stop nginx-status-stop
 
 ## Validate latest .deb package on a local Ubuntu image with Docker
 docker-run-deb:
