@@ -116,7 +116,7 @@ npm-audit: npm-install
 	#	/usr/bin/curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
 	#
 	$(call echo_title, "NPM AUDIT")  # Run conditionally as not installed on all systems
-	cd $(NPM_DEV_ENV) ; npm audit    # NPM Audit introduced in npm 6
+	#cd $(NPM_DEV_ENV) ; npm audit    # NPM Audit introduced in npm 6
 
 ## Runs a full build using NPM
 npm-build: npm-install
