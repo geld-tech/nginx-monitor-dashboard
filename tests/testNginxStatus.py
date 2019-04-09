@@ -21,12 +21,12 @@ class TestNginxStatus(unittest.TestCase):
     def test_poll_metrics(self):
         """Poll Metrics"""
         nginx_status = NginxStatus()
-        self.assertEqual({}, nginx_status.poll_metrics({}))
+        self.assertEqual({}, nginx_status.poll_metrics())
 
     def test_collect_metrics(self):
         """Collect Metrics"""
         nginx_status = NginxStatus()
-        nginx_status.collect_metrics({})
+        nginx_status.collect_metrics()
         self.assertEqual({}, nginx_status.get())
 
 
