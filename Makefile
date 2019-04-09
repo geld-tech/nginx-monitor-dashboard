@@ -75,6 +75,7 @@ local-dev-env:
 	mkdir -p $(LOCAL_DEV_ENV)
 	cp -r sources/server/ $(LOCAL_DEV_ENV)
 	cp -r sources/webapp/ $(LOCAL_DEV_ENV)
+	cp -r stub/ $(LOCAL_DEV_ENV)
 	@echo "== Replace place holders =="
 	find $(LOCAL_DEV_ENV) -type f | xargs sed -i "s/__PACKAGE_NAME__/$(PACKAGE_NAME)/g"
 	find $(LOCAL_DEV_ENV) -type f | xargs sed -i "s/__PACKAGE_DESC__/$(PACKAGE_DESC)/g"
@@ -138,14 +139,6 @@ daemon-stop:
 	-python $(SRV_DEV_ENV)/monitor-collectord.py stop
 	-pkill -f $(SRV_DEV_ENV)/monitor-collectord.py
 
-## Nginx status stub daemon
-nginx-status-stub:
-	$(call echo_title, "NGINX STATUS STUB DAEMON")
-	@echo ""
-	trap hupexit HUP
-	trap intexit INT
-	python $(SRV_DEV_ENV)/stub/nginx-status-stub.py &
-
 ## Prepare application
 webapp-setup: npm-build
 	$(call echo_title, "PREPARE")
@@ -183,6 +176,14 @@ webapp-start:
 webapp-stop:
 	$(call echo_title, "STOP WEB APPLICATION")
 	-pkill -f $(SRV_DEV_ENV)/application.py
+
+## Nginx status stub daemon
+nginx-status-stub:
+	$(call echo_title, "NGINX STATUS STUB DAEMON")
+	@echo ""
+	trap hupexit HUP
+	trap intexit INT
+	python $(SRV_DEV_ENV)/stub/nginx-status-stub.py &
 
 ## Start local development environment
 start: all daemon-start webapp-start nginx-status-stub
