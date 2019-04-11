@@ -20,9 +20,13 @@ from modules.NginxStatus import NginxStatus
 app = Flask(__name__)
 app.debug = True
 
+# Global config
+local_path = os.path.dirname(os.path.abspath(__file__))
+config_file = local_path+'/config/settings.cfg'
+
 # Global config for API URLs and Tokens
 config = ConfigParser.ConfigParser()
-config.readfp(open('config/settings.cfg'))
+config.readfp(open(config_file))
 if 'ganalytics' in config.sections():
     ganalytics_id = config.get('ganalytics', 'ua_id')
 else:
