@@ -16,18 +16,21 @@ class TestNginxStatus(unittest.TestCase):
     def test_get(self):
         """Data getter"""
         nginx_status = NginxStatus()
-        self.assertEqual({}, nginx_status.get())
+        self.assertEqual(dict, type(nginx_status.get()))
+        self.assertNotEqual(False, nginx_status.get())  # Empty directories evaluate to False in Python
 
     def test_poll_metrics(self):
         """Poll Metrics"""
         nginx_status = NginxStatus()
-        self.assertEqual({}, nginx_status.poll_metrics())
+        self.assertEqual(dict, type(nginx_status.poll_metrics()))
+        self.assertNotEqual(False, nginx_status.poll_metrics())  # Empty directories evaluate to False in Python
 
     def test_collect_metrics(self):
         """Collect Metrics"""
         nginx_status = NginxStatus()
         nginx_status.collect_metrics()
-        self.assertEqual({}, nginx_status.get())
+        self.assertEqual(dict, type(nginx_status.get()))
+        self.assertNotEqual(False, nginx_status.get())  # Empty directories evaluate to False in Python
 
 
 if __name__ == '__main__':
