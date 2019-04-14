@@ -18,7 +18,7 @@ PORT=5000
 WAIT=10
 
 ## Run all targets locally
-all: stop save-cache clean isort lint test local-dev-env vue-dev-tools npm-install npm-lint npm-audit npm-build webapp-setup webapp-settings
+all: stop save-cache clean isort lint local-dev-env test vue-dev-tools npm-install npm-lint npm-audit npm-build webapp-setup webapp-settings
 	@echo "Build completed successfully!"
 
 ## Remove all local build artifacts
@@ -58,7 +58,7 @@ lint:
 	flake8 sources/server/ --show-source --max-line-length=239 --max-complexity=10 --statistics --count
 
 ## Run unit tests
-test:
+test: nginx-status-start
 	$(call echo_title, "PYTHON UNIT TESTS")
 	python -m unittest discover -s tests
 
@@ -181,7 +181,8 @@ webapp-stop:
 nginx-status-start:
 	$(call echo_title, "START NGINX STATUS STUB DAEMON")
 	@echo ""
-	python $(SRV_DEV_ENV)/../stub/nginx-status-stub.py &
+	-python $(SRV_DEV_ENV)/../stub/nginx-status-stub.py &
+	-sleep 3
 
 ## Stop Nginx status stub daemon
 nginx-status-stop:
