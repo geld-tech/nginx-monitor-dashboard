@@ -53,19 +53,19 @@ A sample demo of the project is hosted on <a href="http://geld.tech">geld.tech</
 
 * Install the repository information and associated GPG key (to ensure authenticity):
 ```
-$ echo "deb https://dl.bintray.com/geldtech/debian /" | sudo tee -a /etc/apt/sources.list.d/geld-tech.list
-$ sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com EA3E6BAEB37CF5E4
+echo "deb https://dl.bintray.com/geldtech/debian /" | sudo tee -a /etc/apt/sources.list.d/geld-tech.list
+apt-key adv --recv-keys --keyserver keyserver.ubuntu.com EA3E6BAEB37CF5E4
 ```
 
 * Update repository list of available packages and clean already installed versions
 ```
-$ sudo apt update
-$ sudo apt clean
+apt update
+apt clean
 ```
 
 * Install package
 ```
-$ sudo apt install nginx-monitor-dashboard
+apt install nginx-monitor-dashboard
 ```
 
 ### CentOS/Red Hat
@@ -78,12 +78,12 @@ name=geld.tech
 baseurl=https://dl.bintray.com/geldtech/rpm
 gpgcheck=0
 repo_gpgcheck=0
-enabled=1" | sudo tee -a /etc/yum.repos.d/geld.tech.repo
+enabled=1" | tee -a /etc/yum.repos.d/geld.tech.repo
 ```
 
 * Install the package
 ```
-sudo yum install nginx-monitor-dashboard
+yum install nginx-monitor-dashboard
 ```
 
 
@@ -103,9 +103,9 @@ sudo yum install nginx-monitor-dashboard
 
 * Reload systemd services configuration and start nginx-monitor-dashboard service
 ```
-$ sudo systemctl daemon-reload
-$ sudo systemctl start nginx-monitor-dashboard
-$ sudo systemctl status nginx-monitor-dashboard
+systemctl daemon-reload
+systemctl start nginx-monitor-dashboard
+systemctl status nginx-monitor-dashboard
 ```
 
 
@@ -133,9 +133,9 @@ A Nginx Status Stub service is running as a daemon to generate sample data local
 The `curl` command allows to fetch its output if needed:
 
 ```
-$ curl http://0.0.0.0:8000/
-Active connections: 1
-server accepts handled requests
-1650 1650 9255
-Reading: 0 Writing: 2 Waiting: 3
+curl http://0.0.0.0:8000/
+  Active connections: 1
+  server accepts handled requests
+  1650 1650 9255
+  Reading: 0 Writing: 2 Waiting: 3
 ```
