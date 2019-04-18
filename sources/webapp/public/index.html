@@ -41,6 +41,11 @@
     <!-- Page Content (auto-injected) -->
     <div id="app"></div>
 
+    <!-- Parameters from backend to use in webapp -->
+    <script type="text/javascript">
+        window.settings = {{ settings | tojson | safe }}
+    </script>
+
     <!-- Footer -->
     <footer class="py-1 bg-white fixed-bottom">
       <div class="container">
