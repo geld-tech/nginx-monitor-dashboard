@@ -48,7 +48,8 @@ db_session = DBSession()
 
 @app.route("/")
 def index():
-    return render_template('index.html', ga_ua_id=ganalytics_id)
+    settings = {}
+    return render_template('index.html', settings=settings, ga_ua_id=ganalytics_id)
 
 
 @app.route("/nginx_status", strict_slashes=False)
