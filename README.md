@@ -111,6 +111,7 @@ $ sudo systemctl status nginx-monitor-dashboard
 
 ## Development
 
+### Local Development
 Use the Makefile targets from the provided Makefile to build and run locally the Flask server with API, a stub Nginx status, and the Vue web application with DevTools enabled for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/) and [Chrome](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd):
 
 ```
@@ -120,6 +121,21 @@ make all
 # Run application locally
 make start
 ```
-Then, access the application locally using a browser at the address: [http://0.0.0.0:5000/](http://0.0.0.0:5000/).
+Then, access the application locally using a browser at the address: [http://0.0.0.0:5000/](http://0.0.0.0:5000/)
 
 Type `make stop` at any stage to stop the local development application.
+
+
+### Nginx Status Stub Daemon
+
+A Nginx Status Stub service is running as a daemon to generate sample data locally when executing unit tests and during local develpment. It is accessible at the address: [http://0.0.0.0:8000/](http://0.0.0.0:8000/)
+
+The `curl` command allows to fetch its output if needed:
+
+```
+$ curl http://0.0.0.0:8000/
+Active connections: 1
+server accepts handled requests
+1650 1650 9255
+Reading: 0 Writing: 2 Waiting: 3
+```
