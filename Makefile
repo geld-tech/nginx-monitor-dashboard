@@ -216,7 +216,7 @@ docker-run-deb:
 		apt update ; \
 		apt install -y nginx-monitor-dashboard ; \
 		systemctl status nginx-monitor-dashboard ; \
-		systemctl status nginx-monitor-collector ; \
+		systemctl status nginx-monitor-dashboard-collector ; \
 		$$SHELL '
 
 ## Validate latest .rpm package on a local CentOS image with Docker
@@ -235,7 +235,7 @@ docker-run-rpm:
 			tee -a /etc/yum.repos.d/geld.tech.repo ; \
 		yum install -y nginx-monitor-dashboard ; \
 		systemctl status nginx-monitor-dashboard ; \
-		systemctl status nginx-monitor-collector ; \
+		systemctl status nginx-monitor-dashboard-collector ; \
 		$$SHELL '
 
 
