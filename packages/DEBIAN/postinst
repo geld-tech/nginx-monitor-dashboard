@@ -29,7 +29,8 @@ case "$1" in
 			echo ""
 			echo -n "Restarting service..."
 			systemctl daemon-reload
-			systemctl start __PACKAGE_NAME__ || true
+			systemctl restart __PACKAGE_NAME__-collector || true
+			systemctl restart __PACKAGE_NAME__ || true
 			echo " OK"
 			echo ""
 			echo "Service __PACKAGE_NAME__ upgraded successfully!!"
@@ -39,6 +40,7 @@ case "$1" in
 			systemctl daemon-reload
 			systemctl enable __PACKAGE_NAME__ || true
 			echo " OK"
+			echo ""
 			cp -p __PACKAGE_DIR__/config/settings.cfg.template __PACKAGE_DIR__/config/settings.cfg
 			echo ""
 			echo "Service __PACKAGE_NAME__ installed successfully!"
