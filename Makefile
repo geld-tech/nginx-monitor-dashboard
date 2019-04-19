@@ -10,6 +10,7 @@ PACKAGE_DESC=Running application locally
 PACKAGE_AUTHOR=geld.tech
 PACKAGE_VERSION=0.0.1
 PACKAGE_DATE=01-01-1970
+PACKAGE_DIR=/opt/geld/webapps/$(PACKAGE_NAME)
 
 # UI Tests
 PROTO=http
@@ -217,6 +218,16 @@ docker-run-deb:
 		apt install -y nginx-monitor-dashboard ; \
 		systemctl status nginx-monitor-dashboard ; \
 		systemctl status nginx-monitor-dashboard-collector ; \
+		touch $(PACKAGE_DIR)/config/settings.cfg.dev ; \
+		echo "[admin]" >> $(PACKAGE_DIR)/config/settings.cfg.dev ; \
+		echo "password = Y25mZmpiZXExMjM=" >> $(PACKAGE_DIR)/config/settings.cfg.dev ; \
+		echo "" >> $(PACKAGE_DIR)/config/settings.cfg.dev ; \
+		echo "[ganalytics]" >> $(PACKAGE_DIR)/config/settings.cfg.dev ; \
+		echo "ua_id = 1234567" >> $(PACKAGE_DIR)/config/settings.cfg.dev ; \
+		cp -f $(PACKAGE_DIR)/config/settings.cfg.dev $(PACKAGE_DIR)/config/settings.cfg ; \
+		systemctl start nginx-monitor-dashboard ; \
+		systemctl status nginx-monitor-dashboard ; \
+		systemctl status nginx-monitor-dashboard-collector ; \
 		$$SHELL '
 
 ## Validate latest .rpm package on a local CentOS image with Docker
@@ -234,6 +245,16 @@ docker-run-rpm:
 		echo -e "[geld.tech]\nname=geld.tech\nbaseurl=http://dl.bintray.com/geldtech/rpm\ngpgcheck=0\nrepo_gpgcheck=0\nenabled=1" | \
 			tee -a /etc/yum.repos.d/geld.tech.repo ; \
 		yum install -y nginx-monitor-dashboard ; \
+		systemctl status nginx-monitor-dashboard ; \
+		systemctl status nginx-monitor-dashboard-collector ; \
+		touch $(PACKAGE_DIR)/config/settings.cfg.dev ; \
+		echo "[admin]" >> $(PACKAGE_DIR)/config/settings.cfg.dev ; \
+		echo "password = Y25mZmpiZXExMjM=" >> $(PACKAGE_DIR)/config/settings.cfg.dev ; \
+		echo "" >> $(PACKAGE_DIR)/config/settings.cfg.dev ; \
+		echo "[ganalytics]" >> $(PACKAGE_DIR)/config/settings.cfg.dev ; \
+		echo "ua_id = 1234567" >> $(PACKAGE_DIR)/config/settings.cfg.dev ; \
+		cp -f $(PACKAGE_DIR)/config/settings.cfg.dev $(PACKAGE_DIR)/config/settings.cfg ; \
+		systemctl start nginx-monitor-dashboard ; \
 		systemctl status nginx-monitor-dashboard ; \
 		systemctl status nginx-monitor-dashboard-collector ; \
 		$$SHELL '
