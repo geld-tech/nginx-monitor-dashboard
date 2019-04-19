@@ -61,6 +61,8 @@ lint:
 test: nginx-status-start
 	$(call echo_title, "PYTHON UNIT TESTS")
 	python -m unittest discover -s tests
+	-sleep 3  # Stops Nginx Status Stub daemon
+	-$(MAKE) nginx-status-stop  
 
 ## Run UI Tests (overridable parameters: PROTO, HOST, PORT, WAIT)
 test-ui:
