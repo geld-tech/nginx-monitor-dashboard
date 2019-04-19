@@ -203,7 +203,7 @@ stop: daemon-stop webapp-stop nginx-status-stop
 ## Validate latest .deb package on a local Ubuntu image with Docker
 docker-run-deb:
 	$(call echo_title, "DOCKER RUN DEB")
-	sudo docker run -i -t -p 8004:8004 --rm ubuntu:xenial /bin/bash -c ' apt clean all && apt update ; \
+	sudo docker run -i -t -p $(PORT):8004 --rm ubuntu:xenial /bin/bash -c ' apt clean all && apt update ; \
 		apt install -y python wget vim ; \
 		wget https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py ; \
 		cp /usr/bin/systemctl /usr/bin/systemctl.bak ; \
@@ -222,7 +222,7 @@ docker-run-deb:
 ## Validate latest .rpm package on a local CentOS image with Docker
 docker-run-rpm:
 	$(call echo_title, "DOCKER RUN RPM")
-	sudo docker run -i -t -p 8004:8004 --rm centos:7 /bin/bash -c ' yum clean all ; \
+	sudo docker run -i -t -p $(PORT):8004 --rm centos:7 /bin/bash -c ' yum clean all ; \
 		yum install -y python wget vim ; \
 		yum install -y epel-release ; \
 		wget https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py ; \
