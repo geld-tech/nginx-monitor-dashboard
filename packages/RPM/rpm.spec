@@ -108,7 +108,7 @@ echo "Executing Post-Uninstallation macro.. "
 # changelog macro to comment on package revisions (date format important)
 ##############################################################################
 %changelog
-* Thu 21 2019 zlig <noreply@gdevnet.com>
+* Thu 21 Feb 2019 zlig <noreply@gdevnet.com>
 - Fixes order of macros
 * Sat Jul 28 2018 zlig <noreply@gdevnet.com>
 - Initial build
