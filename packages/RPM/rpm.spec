@@ -44,6 +44,7 @@ if [ $1 -gt 1 ] ; then
     echo -n "Restarting service..."
     systemctl daemon-reload
     systemctl restart __PACKAGE_NAME__ || true
+    systemctl restart __PACKAGE_NAME__-collector || true
     echo " OK"
     echo ""
     echo "Service __PACKAGE_NAME__ upgraded successfully!!"
@@ -53,6 +54,12 @@ else
     echo -n "Installing service..."
     systemctl daemon-reload
     systemctl enable __PACKAGE_NAME__ || true
+    systemctl enable __PACKAGE_NAME__-collector || true
+    echo " OK"
+    echo ""
+    echo -n "Starting service..."
+    systemctl start __PACKAGE_NAME__ || true
+    systemctl start __PACKAGE_NAME__-collector || true
     echo " OK"
     echo ""
     echo "Service __PACKAGE_NAME__ installed successfully!"
@@ -72,6 +79,8 @@ echo "Executing Pre-Uninstallation macro.. "
 
 case "$1" in
   0)
+    systemctl disable __PACKAGE_NAME__-collector || true
+    systemctl stop __PACKAGE_NAME__-collector || true
     systemctl disable __PACKAGE_NAME__ || true
     systemctl stop __PACKAGE_NAME__ || true
     rm -f __PACKAGE_DIR__/config/settings.cfg
@@ -96,8 +105,9 @@ echo "Executing Post-Uninstallation macro.. "
 # The files will be installed as the below structure on the target system
 ##############################################################################
 %files
-%defattr(755,root,www-data)
-/opt/
+%defattr(755,root,www-data,775)
+%dir __PACKAGE_DIR__
+__PACKAGE_DIR__
 /etc/
 %config(noreplace) __PACKAGE_DIR__/config/settings.cfg
 
