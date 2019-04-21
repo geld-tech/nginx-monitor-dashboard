@@ -60,6 +60,10 @@ def status():
         now = datetime.datetime.utcnow()
         last_2_hours = now - datetime.timedelta(hours=2)
 
+        offset = 1  # GMT+1 as Default Timezone offset
+        if request.headers.get('offset'):
+            offset = int(request.headers.get('offset'))
+
         server = db_session.query(Server).filter_by(hostname=nginx_status.get_server_hostname()).first()
         for result in db_session.query(Status).filter_by(server=server).filter(Status.timestamp >= last_2_hours.strftime('%s')).order_by(Status.id):
             status = {}
