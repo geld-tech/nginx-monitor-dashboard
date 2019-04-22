@@ -73,7 +73,9 @@ def status():
             status['waiting'] = result.waiting
             status['date_time'] = result.date_time.strftime("%H:%M")
             data.append(status)
-            time_labels.append(result.date_time)
+            time_label = (result.date_time + datetime.timedelta(hours=offset)).strftime("%H:%M")
+            if time_label not in time_labels:
+                    time_labels.append(time_label)
         return jsonify({'data': data, 'time_labels': time_labels}), 200
     except Exception, e:
         logger.error('Error retrieving nginx status: %s' % e)
