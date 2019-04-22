@@ -1,7 +1,9 @@
 import axios from 'axios'
 
 export function fetchData() {
-  return axios.get('/nginx_status/').then(response => { return response.data }).catch(error => { /* console.error(error); */ return Promise.reject(error) })
+  var offset = -( new Date().getTimezoneOffset()/60 )
+  var headers = { headers: { offset: offset } }
+  return axios.get('/nginx_status/', headers).then(response => { return response.data }).catch(error => { /* console.error(error); */ return Promise.reject(error) })
 }
 
 export function fetchSearchData(keyword) {
