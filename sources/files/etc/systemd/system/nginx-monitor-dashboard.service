@@ -1,7 +1,7 @@
 [Unit]
 Description=__PACKAGE_DESC__
-After=network.target
-Requires=nginx-monitor-collector
+After=syslog.target network.target
+Wants=__PACKAGE_NAME__-collector.service
 
 [Service]
 User=www-data
