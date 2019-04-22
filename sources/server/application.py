@@ -10,7 +10,7 @@ import logging.handlers
 import os
 from optparse import OptionParser
 
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
