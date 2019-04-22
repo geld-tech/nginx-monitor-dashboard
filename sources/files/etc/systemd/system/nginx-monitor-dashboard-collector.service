@@ -1,13 +1,15 @@
 [Unit]
-Description=__PACKAGE_DESC__
+Description=Collector Daemon associated with the service __PACKAGE_NAME__
+After=__PACKAGE_NAME__.service
 
 [Service]
+Type=simple
 User=root
 Group=www-data
 WorkingDirectory=__PACKAGE_DIR__
 ExecStart=__PACKAGE_DIR__/monitor-collectord.py start
 ExecStop=__PACKAGE_DIR__/monitor-collectord.py stop
+TimeoutStartSec=10
 
 [Install]
-WantedBy=multi-user.target
-
+WantedBy=__PACKAGE_NAME__.service
