@@ -133,7 +133,7 @@ daemon-start:
 	$(call echo_title, "START METRICS DAEMON")
 	@echo "Starting stub background daemon locally, use 'make daemon-stop' to terminate.."
 	@echo ""
-	python $(SRV_DEV_ENV)/monitor-collectord.py start
+	python $(SRV_DEV_ENV)/monitor-collectord.py start --debug
 	@echo ""
 	@sleep 3
 
