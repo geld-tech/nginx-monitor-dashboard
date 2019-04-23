@@ -14,13 +14,18 @@ from modules.NginxStatus import NginxStatus
 
 
 class MetricsCollector():
-    def __init__(self, pid_file, poll_interval=60, db_path='/dev/shm/metrics.sqlite3'):
+    def __init__(self, pid_file, poll_interval=60, db_path='/dev/shm/metrics.sqlite3', debug=False):
         self.stdin_path = '/dev/null'
-        self.stdout_path = '/dev/null'
-        self.stderr_path = '/dev/null'
+        if debug:
+            self.stdout_path = '/dev/tty'
+            self.stderr_path = '/dev/tty'
+            self.poll_interval = int(poll_interval/3)
+        else:
+            self.stdout_path = '/dev/null'
+            self.stderr_path = '/dev/null'
+            self.poll_interval = poll_interval
         self.pidfile_timeout = 5
         self.pidfile_path = pid_file
-        self.poll_interval = poll_interval
         self.db_path = db_path
         self.db_session = None
         self.server = None
@@ -89,11 +94,15 @@ def is_running(pid_file):
 
 
 # Main
-DB_PATH = os.path.abspath(os.path.dirname(__file__))+'/data/metrics.sqlite3'
-PID_FILE = '/tmp/nginx-monitor-collectord.pid'
+SCRIPT_PATH = os.path.abspath(os.path.dirname(__file__))
+DB_FILE = SCRIPT_PATH + '/data/metrics.sqlite3'
+PID_FILE = SCRIPT_PATH + '/.__PACKAGE_NAME__-collector.pid'
 POLL_INTERVAL = 30
+DEBUG = False
 
 if __name__ == "__main__":
+    if len(sys.argv) == 3:
+        DEBUG = True
     if len(sys.argv) == 2:
         if 'status' == sys.argv[1]:
             running, pid = is_running(PID_FILE)
@@ -104,7 +113,7 @@ if __name__ == "__main__":
         elif 'stop' == sys.argv[1] and not is_running(PID_FILE)[0]:
             print '%s is not running.' % sys.argv[0]
         else:
-            collector = MetricsCollector(PID_FILE, poll_interval=POLL_INTERVAL, db_path=DB_PATH)
+            collector = MetricsCollector(PID_FILE, poll_interval=POLL_INTERVAL, db_path=DB_FILE, debug=DEBUG)
             daemon = runner.DaemonRunner(collector)
             daemon.do_action()  # start|stop|restart as sys.argv[1]
             running, pid = is_running(PID_FILE)
