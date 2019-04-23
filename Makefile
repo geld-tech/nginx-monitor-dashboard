@@ -58,12 +58,16 @@ lint:
 	$(call echo_title, "PYTHON LINTER")
 	flake8 sources/server/ --show-source --max-line-length=239 --max-complexity=10 --statistics --count
 
-## Run unit tests
+## Run unit tests (alongside a stub status service)
+tests:
+	@$(MAKE) test
+	@$(MAKE) nginx-status-stop > /dev/null
+
+## Private target to run unit tests
 test: nginx-status-start
 	$(call echo_title, "PYTHON UNIT TESTS")
 	python -m unittest discover -s tests
-	@sleep 3   # Stops Nginx Status Stub daemon
-	@$(MAKE) nginx-status-stop > /dev/null 
+	@sleep 3
 
 ## Run UI Tests (overridable parameters: PROTO, HOST, PORT, WAIT)
 test-ui:
