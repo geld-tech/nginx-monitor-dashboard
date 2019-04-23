@@ -197,7 +197,7 @@ nginx-status-stop:
 	-pkill -f $(SRV_DEV_ENV)/../stub/nginx-status-stub.py
 
 ## Start local development environment
-start: all daemon-start webapp-start nginx-status-start
+start: all nginx-status-start daemon-start webapp-start
 
 ## Stop local development environment
 stop: daemon-stop webapp-stop nginx-status-stop
