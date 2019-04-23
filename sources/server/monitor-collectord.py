@@ -14,7 +14,7 @@ from modules.NginxStatus import NginxStatus
 
 
 class MetricsCollector():
-    def __init__(self, pid_file, poll_interval=60, db_path='/dev/shm/metrics.sqlite3', debug=False):
+    def __init__(self, pid_file, poll_interval=60, db_path='/dev/shm/metrics.sqlite3', debug=True):
         self.stdin_path = '/dev/null'
         if debug:
             self.stdout_path = '/dev/tty'
