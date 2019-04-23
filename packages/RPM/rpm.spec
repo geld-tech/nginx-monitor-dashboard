@@ -110,6 +110,7 @@ echo "Executing Post-Uninstallation macro.. "
 __PACKAGE_DIR__
 /etc/systemd/system/*.service
 /etc/geld/nginx.conf.d/__PACKAGE_NAME__.conf
+/etc/nginx/conf.d/nginx-status.conf
 %config(noreplace) __PACKAGE_DIR__/config/settings.cfg
 
 %doc
