@@ -132,7 +132,7 @@ Type `make stop` at any stage to stop the local development application.
 A series of unit tests is executable via a single command:
 
 ```
-make test
+make tests
 ```
 
 
