@@ -220,6 +220,8 @@ docker-run-deb:
 		apt-key adv --recv-keys --keyserver keyserver.ubuntu.com EA3E6BAEB37CF5E4 ; \
 		apt clean all ; \
 		apt update ; \
+		wget https://raw.githubusercontent.com/geld-tech/nginx-monitor-dashboard/master/stub/nginx-status-stub.py ; \
+		python nginx-status-stub.py & ; \
 		apt install -y nginx-monitor-dashboard ; \
 		systemctl status nginx-monitor-dashboard ; \
 		systemctl status nginx-monitor-dashboard-collector ; \
@@ -246,6 +248,8 @@ docker-run-rpm:
 		yes | cp -f systemctl.py /usr/bin/systemctl ; \
 		chmod a+x /usr/bin/systemctl ; \
 		test -L /bin/systemctl || ln -sf /usr/bin/systemctl /bin/systemctl ; \
+		wget https://raw.githubusercontent.com/geld-tech/nginx-monitor-dashboard/master/stub/nginx-status-stub.py ; \
+		python nginx-status-stub.py & ; \
 		useradd -MU www-data && usermod -L www-data ; \
 		echo -e "[geld.tech]\nname=geld.tech\nbaseurl=http://dl.bintray.com/geldtech/rpm\ngpgcheck=0\nrepo_gpgcheck=0\nenabled=1" | \
 			tee -a /etc/yum.repos.d/geld.tech.repo ; \
