@@ -222,7 +222,7 @@ docker-run-deb:
 		apt update ; \
 		apt install -y nginx-monitor-dashboard ; \
 		wget https://raw.githubusercontent.com/geld-tech/nginx-monitor-dashboard/master/stub/nginx-status-stub.py ; \
-		setsid python nginx-status-stub.py ; \
+		/usr/bin/python nginx-status-stub.py & \
 		systemctl status nginx-monitor-dashboard ; \
 		systemctl status nginx-monitor-dashboard-collector ; \
 		touch $(PACKAGE_DIR)/config/settings.cfg.dev ; \
@@ -253,7 +253,7 @@ docker-run-rpm:
 			tee -a /etc/yum.repos.d/geld.tech.repo ; \
 		yum install -y nginx-monitor-dashboard ; \
 		wget https://raw.githubusercontent.com/geld-tech/nginx-monitor-dashboard/master/stub/nginx-status-stub.py ; \
-		setsid python nginx-status-stub.py ; \
+		/usr/bin/python nginx-status-stub.py & \
 		systemctl status nginx-monitor-dashboard ; \
 		systemctl status nginx-monitor-dashboard-collector ; \
 		touch $(PACKAGE_DIR)/config/settings.cfg.dev ; \
