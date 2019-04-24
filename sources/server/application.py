@@ -14,7 +14,7 @@ from flask import Flask, jsonify, render_template, request
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from modules.Models import Base, Server, Status
+from modules.Models import Base, Status
 from modules.NginxStatus import NginxStatus
 
 app = Flask(__name__)
@@ -64,7 +64,6 @@ def status():
         if request.headers.get('offset'):
             offset = int(request.headers.get('offset'))
 
-        server = db_session.query(Server).filter_by(hostname=nginx_status.get_server_hostname()).first()
         for result in db_session.query(Status).filter(Status.timestamp >= last_2_hours.strftime('%s')).order_by(Status.id):
             status = {}
             status['active'] = result.active
