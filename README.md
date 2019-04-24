@@ -81,6 +81,11 @@ repo_gpgcheck=0
 enabled=1" | tee -a /etc/yum.repos.d/geld.tech.repo
 ```
 
+* Install EPEL repository for external dependencies
+```
+yum install epel-release
+```
+
 * Install the package
 ```
 yum install nginx-monitor-dashboard
