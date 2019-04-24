@@ -273,7 +273,9 @@ docker-run-rpm:
 .PHONY: clean isort lint test local-dev-env
 .PHONY: vue-dev-tools npm-install npm-lint npm-audit npm-build
 .PHONY: webapp-setup webapp-settings webapp-config
-.PHONY: daemon-start daemon-stop webapp-start webapp-stop
+.PHONY: webapp-start webapp-stop
+.PHONY: daemon-start daemon-stop
+.PHONY: nginx-status-start nginx-status-stop
 .PHONY: start stop
 
 
