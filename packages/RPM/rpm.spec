@@ -57,6 +57,11 @@ else
     systemctl enable __PACKAGE_NAME__-collector || true
     echo " OK"
     echo ""
+    echo -n "Adding required user and group..."
+    id -u www-data || useradd -MU www-data
+    id -g www-data || usermod -L  www-data
+    echo " OK"
+    echo ""
     echo -n "Starting service..."
     systemctl start __PACKAGE_NAME__ || true
     systemctl start __PACKAGE_NAME__-collector || true
