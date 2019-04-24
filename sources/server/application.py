@@ -71,7 +71,7 @@ def status():
             status['reading'] = result.reading
             status['writing'] = result.writing
             status['waiting'] = result.waiting
-            status['date_time'] = result.date_time.strftime("%H:%M")
+            status['date_time'] = (result.date_time + datetime.timedelta(hours=offset)).strftime("%H:%M")
             data.append(status)
             time_label = (result.date_time + datetime.timedelta(hours=offset)).strftime("%H:%M")
             if time_label not in time_labels:
