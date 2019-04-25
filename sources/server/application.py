@@ -58,13 +58,13 @@ def status():
         data = []
         time_labels = []
         now = datetime.datetime.utcnow()
-        last_2_hours = now - datetime.timedelta(hours=2)
+        last_hour = now - datetime.timedelta(hours=1)
 
         offset = 1  # GMT+1 as Default Timezone offset
         if request.headers.get('offset'):
             offset = int(request.headers.get('offset'))
 
-        for result in db_session.query(Status).filter(Status.timestamp >= last_2_hours.strftime('%s')).order_by(Status.id):
+        for result in db_session.query(Status).filter(Status.timestamp >= last_hour.strftime('%s')).order_by(Status.id):
             status = {}
             status['active'] = result.active
             status['reading'] = result.reading
